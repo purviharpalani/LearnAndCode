@@ -25,15 +25,26 @@ var getCarbonFootprint = /** @class */ (function () {
     getCarbonFootprint.prototype.setEmailCounts = function (emailCounts) {
         this.emailCounts = emailCounts;
     };
-    getCarbonFootprint.prototype.calculateAndGenerateReport = function () {
-        var ShortEmailOnPhoneWeightInKG = ((this.emailCounts[EmailType.ShortEmailOnPhone] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnPhone]) / 1000;
-        var ShortEmailOnLaptopWeightInKG = ((this.emailCounts[EmailType.ShortEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnLaptop]) / 1000;
-        var LongEmailOnLaptopWeightInKG = ((this.emailCounts[EmailType.LongEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.LongEmailOnLaptop]) / 1000;
-        var EmailBlastWeightInKG = ((this.emailCounts[EmailType.EmailBlast] || 0) * EmissionsInGramsPerEmail[EmailType.EmailBlast]) / 1000;
-        var sentWeightInKG = ((this.emailCounts[EmailType.SentEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SentEmail]) / 1000;
-        var spamWeightInKG = ((this.emailCounts[EmailType.SpamEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SpamEmail]) / 1000;
-        var inboxWeightInKG = ShortEmailOnPhoneWeightInKG + ShortEmailOnLaptopWeightInKG + LongEmailOnLaptopWeightInKG + EmailBlastWeightInKG;
-        return "\n        emailId : ".concat(this.entity.email, "\n        source : ").concat(this.entityType[0], "\n        inbox : ").concat(inboxWeightInKG.toFixed(2), " KG\n        sent : ").concat(sentWeightInKG.toFixed(2), " KG\n        spam : ").concat(spamWeightInKG.toFixed(2), " KG\n        ");
+    getCarbonFootprint.prototype.calculateCarbonFootprint = function () {
+        var carbonFootprint = {
+            inbox: 0,
+            sent: 0,
+            spam: 0
+        };
+        carbonFootprint.inbox =
+            ((this.emailCounts[EmailType.ShortEmailOnPhone] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnPhone] +
+                (this.emailCounts[EmailType.ShortEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnLaptop] +
+                (this.emailCounts[EmailType.LongEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.LongEmailOnLaptop] +
+                (this.emailCounts[EmailType.EmailBlast] || 0) * EmissionsInGramsPerEmail[EmailType.EmailBlast]) /
+                1000;
+        carbonFootprint.sent =
+            ((this.emailCounts[EmailType.SentEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SentEmail]) / 1000;
+        carbonFootprint.spam =
+            ((this.emailCounts[EmailType.SpamEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SpamEmail]) / 1000;
+        return carbonFootprint;
+    };
+    getCarbonFootprint.prototype.generateReport = function (carbonFootprint) {
+        return "\n        emailId : ".concat(this.entity.email, "\n        source : ").concat(this.entityType[0], "\n        inbox : ").concat(carbonFootprint.inbox.toFixed(2), " KG\n        sent : ").concat(carbonFootprint.sent.toFixed(2), " KG\n        spam : ").concat(carbonFootprint.spam.toFixed(2), " KG\n        ");
     };
     return getCarbonFootprint;
 }());
@@ -49,5 +60,6 @@ var emailCounts = (_b = {},
     _b);
 var newUser = new getCarbonFootprint(entityType, entity);
 newUser.setEmailCounts(emailCounts);
-var report = newUser.calculateAndGenerateReport();
+var carbonFootprint = newUser.calculateCarbonFootprint();
+var report = newUser.generateReport(carbonFootprint);
 console.log(report);

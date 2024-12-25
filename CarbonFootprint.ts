@@ -32,28 +32,38 @@ class getCarbonFootprint{
         this.emailCounts = emailCounts;
     }
     
-    calculateAndGenerateReport(): string {
-        const ShortEmailOnPhoneWeightInKG = ((this.emailCounts[EmailType.ShortEmailOnPhone] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnPhone])/1000;
+    calculateCarbonFootprint(): Record<string, number> {
+        const carbonFootprint = {
+            inbox: 0,
+            sent: 0,
+            spam: 0
+        };
 
-        const ShortEmailOnLaptopWeightInKG = ((this.emailCounts[EmailType.ShortEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnLaptop])/1000;
-        
-        const LongEmailOnLaptopWeightInKG = ((this.emailCounts[EmailType.LongEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.LongEmailOnLaptop])/1000;
+        carbonFootprint.inbox =
+            ((this.emailCounts[EmailType.ShortEmailOnPhone] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnPhone] +
+                (this.emailCounts[EmailType.ShortEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnLaptop] +
+                (this.emailCounts[EmailType.LongEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.LongEmailOnLaptop] +
+                (this.emailCounts[EmailType.EmailBlast] || 0) * EmissionsInGramsPerEmail[EmailType.EmailBlast]) /
+            1000;
 
-        const EmailBlastWeightInKG = ((this.emailCounts[EmailType.EmailBlast] || 0) * EmissionsInGramsPerEmail[EmailType.EmailBlast])/1000;
+        carbonFootprint.sent =
+            ((this.emailCounts[EmailType.SentEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SentEmail]) / 1000;
 
-        const sentWeightInKG = ((this.emailCounts[EmailType.SentEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SentEmail])/1000;
+        carbonFootprint.spam =
+            ((this.emailCounts[EmailType.SpamEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SpamEmail]) / 1000;
 
-        const spamWeightInKG = ((this.emailCounts[EmailType.SpamEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SpamEmail])/1000;
+        return carbonFootprint;
+    }
 
-        const inboxWeightInKG = ShortEmailOnPhoneWeightInKG + ShortEmailOnLaptopWeightInKG + LongEmailOnLaptopWeightInKG + EmailBlastWeightInKG;
+    generateReport(carbonFootprint: Record<string, number>): string {
         return `
         emailId : ${this.entity.email}
         source : ${this.entityType[0]}
-        inbox : ${inboxWeightInKG.toFixed(2)} KG
-        sent : ${sentWeightInKG.toFixed(2)} KG
-        spam : ${spamWeightInKG.toFixed(2)} KG
+        inbox : ${carbonFootprint.inbox.toFixed(2)} KG
+        sent : ${carbonFootprint.sent.toFixed(2)} KG
+        spam : ${carbonFootprint.spam.toFixed(2)} KG
         `;
-    }   
+    }
 }
 
 
@@ -63,7 +73,7 @@ let entity = { email: "purviharpalani@gmail.com" };
 const emailCounts: Record<EmailType, number> = {
     [EmailType.SpamEmail]: 2000,
     [EmailType.SentEmail]: 450,
-    [EmailType.ShortEmailOnPhone]: 300,
+    [EmailType.ShortEmailOnPhone]: 300,g
     [EmailType.ShortEmailOnLaptop]: 240,
     [EmailType.LongEmailOnLaptop]: 10,
     [EmailType.EmailBlast]: 3
@@ -71,5 +81,6 @@ const emailCounts: Record<EmailType, number> = {
 
 const newUser = new getCarbonFootprint(entityType, entity);
 newUser.setEmailCounts(emailCounts);
-const report = newUser.calculateAndGenerateReport();
+const carbonFootprint = newUser.calculateCarbonFootprint();
+const report = newUser.generateReport(carbonFootprint);
 console.log(report);
