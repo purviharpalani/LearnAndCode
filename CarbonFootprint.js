@@ -27,24 +27,24 @@ var getCarbonFootprint = /** @class */ (function () {
     };
     getCarbonFootprint.prototype.calculateCarbonFootprint = function () {
         var carbonFootprint = {
-            inbox: 0,
-            sent: 0,
-            spam: 0
+            inboxWeightInKG: 0,
+            sentWeightInKG: 0,
+            spamWeightInKG: 0
         };
-        carbonFootprint.inbox =
+        carbonFootprint.inboxWeightInKG =
             ((this.emailCounts[EmailType.ShortEmailOnPhone] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnPhone] +
                 (this.emailCounts[EmailType.ShortEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.ShortEmailOnLaptop] +
                 (this.emailCounts[EmailType.LongEmailOnLaptop] || 0) * EmissionsInGramsPerEmail[EmailType.LongEmailOnLaptop] +
                 (this.emailCounts[EmailType.EmailBlast] || 0) * EmissionsInGramsPerEmail[EmailType.EmailBlast]) /
                 1000;
-        carbonFootprint.sent =
+        carbonFootprint.sentWeightInKG =
             ((this.emailCounts[EmailType.SentEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SentEmail]) / 1000;
-        carbonFootprint.spam =
+        carbonFootprint.spamWeightInKG =
             ((this.emailCounts[EmailType.SpamEmail] || 0) * EmissionsInGramsPerEmail[EmailType.SpamEmail]) / 1000;
         return carbonFootprint;
     };
     getCarbonFootprint.prototype.generateReport = function (carbonFootprint) {
-        return "\n        emailId : ".concat(this.entity.email, "\n        source : ").concat(this.entityType[0], "\n        inbox : ").concat(carbonFootprint.inbox.toFixed(2), " KG\n        sent : ").concat(carbonFootprint.sent.toFixed(2), " KG\n        spam : ").concat(carbonFootprint.spam.toFixed(2), " KG\n        ");
+        return "\n        emailId : ".concat(this.entity.email, "\n        source : ").concat(this.entityType[0], "\n        inbox : ").concat(carbonFootprint.inboxWeightInKG.toFixed(2), " KG\n        sent : ").concat(carbonFootprint.sentWeightInKG.toFixed(2), " KG\n        spam : ").concat(carbonFootprint.spamWeightInKG.toFixed(2), " KG\n        ");
     };
     return getCarbonFootprint;
 }());
