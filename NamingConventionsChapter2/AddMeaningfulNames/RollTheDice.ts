@@ -6,17 +6,17 @@ function rollDice(sides: number): number {
 }
 
 function main(): void {
-    const sidesOfDie = 6;
-    let isDiceRolling = true;
+    const sidesOfDice = 6;
+    let userWantsToContinue = true;
 
-    while (isDiceRolling) {
+    while (userWantsToContinue) {
         const userInput = prompt("Ready to roll? Enter Q to Quit");
 
         if (userInput && userInput.toLowerCase() !== "q") {
-            const rollResult = rollDice(sidesOfDie);
+            const rollResult = rollDice(sidesOfDice);
             console.log(`You have rolled a ${rollResult}`);
         } else {
-            isDiceRolling = false;
+            userWantsToContinue = false;
         }
     }
 }
