@@ -12,9 +12,9 @@ const countryData: { [key: string]: { name: string; neighbors: string[] } } = {
     CN: { name: "China", neighbors: ["India", "Pakistan", "Nepal", "Russia", "Mongolia", "Vietnam", "Laos", "Myanmar"] }
 };
 
-function getCountryNameByCode(countryCode: string): string {
-    const countryCodeUppercase  = countryCode.toUpperCase();
-    const countryInfo = countryData[countryCodeUppercase];
+function getCountryInfoByCode(countryCode: string): string {
+    const codeUppercase  = countryCode.toUpperCase();
+    const countryInfo = countryData[codeUppercase];
     if(!countryInfo){
         return "Invalid code";
     }
@@ -31,7 +31,7 @@ function main(): void {
     const userInput = prompt("Enter a country code (e.g., IN, US, NZ):");
 
     if (userInput) {
-        const countryInfo = getCountryNameByCode(userInput.trim());  // to remove whitespaces
+        const countryInfo = getCountryInfoByCode(userInput.trim());  // to remove whitespaces
         console.log(countryInfo);
     } else {
         console.log("No input provided.");
