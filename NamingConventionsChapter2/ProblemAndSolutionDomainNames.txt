@@ -1,0 +1,25 @@
+Problem Domain names:
+showDependentQuestionForWholeNumber
+showValidationMessage
+certificationRecordID
+showAndHideDropdownForSingleSelect
+saveRadarChartSummaryData
+diagnosticStatus
+diagnosticSurveyStage
+PragmaticInnovationanswerCount
+isPEVCCertifiedValueError
+validatePEVCCertified
+
+
+Solution Domain names:
+updateProgressbar
+maxquestionCount
+savechanges
+selectOption
+updateStatus
+answervalue
+answerStack
+loadImage
+drawImages
+restore
+onSubmitButtonClick
