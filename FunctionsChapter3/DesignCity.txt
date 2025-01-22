@@ -27,4 +27,42 @@ buildCity()
             prepareStorageAreas()
         }
     }
+    planCity()
+    {
+        createMap()
+        designLayout()
+        {
+            allocateZones()
+            planStructure()
+            designStreetPatterns()
+            planUtilityPlacements()
+        }
+        planPublicServices()
+        {
+            allocateSpaceForHealthcare()
+            planEducationalInstitutions()
+            planEmergencyCenters()
+        }
+        planSustainability()
+        {
+            planGreenSpaces()
+            integrateRenewableEnergySources()
+            planWaterManagement()
+            planRecyclingCenters()
+        }
+        planTransportation()
+        {
+            planMajorHighways()
+            planLocalStreets()
+            designRoadNetwork()
+            includeWalkWays()
+        }
+        definePublicSpaces()
+        {
+            planPublicBuildings()
+            planRecreationalSpaces()
+            planTheatres()
+            planMarketplaces()
+        }
+    }
 }
