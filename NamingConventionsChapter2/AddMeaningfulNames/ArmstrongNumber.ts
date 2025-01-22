@@ -1,7 +1,7 @@
 import promptSync from 'prompt-sync';
 const prompt = promptSync();
 
-function calculateArmstrongNumber(originalNumber: number): number {
+function calculateDigitPowerSum(originalNumber: number): number {
     let sum = 0;
     let digitCount = 0;
 
@@ -28,7 +28,7 @@ const userInput = prompt("Please enter the number to check for Armstrong:");
 if (userInput) {
     const numberToCheck = parseInt(userInput, 10);
 
-    if (numberToCheck === calculateArmstrongNumber(numberToCheck)) {
+    if (numberToCheck === calculateDigitPowerSum(numberToCheck)) {
         console.log(`${numberToCheck} is an Armstrong number.`);
     } else {
         console.log(`${numberToCheck} is not an Armstrong number.`);
