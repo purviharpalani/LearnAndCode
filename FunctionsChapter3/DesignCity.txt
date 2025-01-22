@@ -1,0 +1,30 @@
+buildCity()
+{
+    prepareSiteForConstruction()
+    {
+        clearLand()
+        {
+            removeVegetation()
+            demolishStructures()
+            levelGround()
+        }
+        surveyLand()
+        {
+            conductSoilTest()
+            createSitePlan()
+        }
+        createBoundaries()
+        {
+            markLegalBoundaries()
+            setupFence()
+            planAccessPoints()
+        }
+        prepareForEquipmentDelivery()
+        {
+            identifyDeliveryRoutes()
+            setupDeliverySchedule()
+            checkNecessaryPermits()
+            prepareStorageAreas()
+        }
+    }
+}
