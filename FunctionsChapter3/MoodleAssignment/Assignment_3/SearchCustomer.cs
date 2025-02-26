@@ -33,16 +33,4 @@ public class CustomerSearch
                  .OrderBy(c => c.CustomerID)
                  .ToList();
     }
-
-    // Export customer data to CSV format
-    public string ExportToCSV(List<Customer> customers)
-    {
-        var sb = new StringBuilder();
-        foreach (var customer in customers)
-        {
-            sb.AppendFormat("{0},{1},{2},{3}", customer.CustomerID, customer.CompanyName, customer.ContactName, customer.Country);
-            sb.AppendLine();
-        }
-        return sb.ToString();
-    }
 }
