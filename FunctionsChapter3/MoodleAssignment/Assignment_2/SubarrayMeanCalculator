@@ -1,0 +1,51 @@
+using System;
+
+class SubarrayMeanCalculator
+{
+    // Computes the prefix sum array
+    static long[] ComputePrefixSum(long[] array)
+    {
+        int n = array.Length;
+        long[] prefixSum = new long[n + 1];
+        prefixSum[0] = 0;
+
+        for (int i = 1; i <= n; i++)
+        {
+            prefixSum[i] = prefixSum[i - 1] + array[i - 1];
+        }
+
+        return prefixSum;
+    }
+
+    // Calculates the mean of a given subarray
+    static long GetSubarrayMean(long[] prefixSum, int left, int right)
+    {
+        long sum = prefixSum[right] - prefixSum[left - 1];
+        return sum / (right - left + 1);
+    }
+
+    // Processes queries and prints results
+    static void ProcessQueries(int queryCount, long[] prefixSum)
+    {
+        for (int i = 0; i < queryCount; i++)
+        {
+            var query = Array.ConvertAll(Console.ReadLine().Split(' '), int.Parse);
+            int left = query[0];
+            int right = query[1];
+
+            Console.WriteLine(GetSubarrayMean(prefixSum, left, right));
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        var input = Array.ConvertAll(Console.ReadLine().Split(' '), int.Parse);
+        int numElements = input[0];
+        int numQueries = input[1];
+
+        long[] array = Array.ConvertAll(Console.ReadLine().Split(' '), long.Parse);
+        long[] prefixSum = ComputePrefixSum(array);
+
+        ProcessQueries(numQueries, prefixSum);
+    }
+}
