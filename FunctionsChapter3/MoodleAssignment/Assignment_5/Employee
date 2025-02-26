@@ -1,0 +1,31 @@
+// Employee Class was not following SRP, so I divided into separate classes according to responsibilty.
+
+class Employee {
+    private:
+        int id;
+        string name;
+        string department;
+        bool isWorking;
+    
+    public:
+        void terminate() {
+            isWorking = false;
+        }
+    
+        bool isCurrentlyWorking() const {
+            return isWorking;
+        }
+    
+        int getId() const {
+            return id;
+        }
+    
+        string getName() const {
+            return name;
+        }
+    
+        string getDepartment() const {
+            return department;
+        }
+    };
+    
