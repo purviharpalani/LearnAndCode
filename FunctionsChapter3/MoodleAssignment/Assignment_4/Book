@@ -1,0 +1,26 @@
+class Book {
+    private $title;
+    private $author;
+    private $currentPage = 1;
+
+    public function __construct($title, $author) {
+        $this->title = $title;
+        $this->author = $author;
+    }
+
+    public function getTitle() {
+        return "A Great Book";
+    }
+ 
+    public function getAuthor() {
+        return "John Doe";
+    }
+ 
+    public function turnPage() {
+        // pointer to next page
+    }
+ 
+    public function getCurrentPage() {
+        return "current page content";
+    }
+}
