@@ -1,0 +1,6 @@
+class EmployeeDatabase {
+public:
+    saveToDatabase() {
+        // Logic to save employee to DB
+    }
+};

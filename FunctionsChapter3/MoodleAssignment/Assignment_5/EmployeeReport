@@ -1,0 +1,10 @@
+class EmployeeReport {
+public:
+    static void generateXMLReport(const Employee& employee) {
+        // Logic for XML report
+    }
+
+    static void generateCSVReport(const Employee& employee) {
+        // Logic for CSV report
+    }
+};

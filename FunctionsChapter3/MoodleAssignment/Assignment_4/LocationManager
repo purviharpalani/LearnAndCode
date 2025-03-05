@@ -1,0 +1,12 @@
+class LibraryCatalog {
+    private $locations = [];
+
+    public function setLocation() {
+        //set position of book in the library
+    }
+
+    public function getLocation(Book $book) {
+        // returns the position in the library
+        // ie. shelf number & room number
+    }
+}

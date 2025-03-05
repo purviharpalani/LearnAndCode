@@ -1,0 +1,6 @@
+class BookRepository {
+    public function save() {
+        $filename = '/documents/' . $this->getTitle() . ' - ' . $this->getAuthor();
+        file_put_contents($filename, serialize($this));
+    }
+}

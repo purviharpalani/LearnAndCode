@@ -1,0 +1,19 @@
+interface Printer {
+ 
+    function printPage($page);
+}
+ 
+class PlainTextPrinter implements Printer {
+ 
+    function printPage($page) {
+        echo $page;
+    }
+ 
+}
+ 
+class HtmlPrinter implements Printer {
+ 
+    function printPage($page) {
+        echo '<div style="single-page">' . $page . '</div>';
+    }
+}
