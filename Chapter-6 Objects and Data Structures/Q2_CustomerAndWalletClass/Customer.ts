@@ -24,10 +24,10 @@ export class Customer {
     }
 
     addMoney(amount: number): void {
-        this.myWallet.addMoney(amount);
+        this.myWallet.deposit(amount);
     }
 
     makePayment(amount: number): boolean {
-        return this.myWallet.subtractMoney(amount);
+        return this.myWallet.withdraw(amount);
     }
 }

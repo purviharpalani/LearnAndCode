@@ -9,13 +9,13 @@ export class Wallet {
         return this.value;
     }
 
-    addMoney(deposit: number): void {
-        this.value += deposit;
+    deposit(amount: number): void {
+        this.value += amount;
     }
 
-    subtractMoney(debit: number): boolean {
-        if (this.value >= debit) {
-            this.value -= debit;
+    withdraw(amount: number): boolean {
+        if (this.value >= amount) {
+            this.value -= amount;
             return true;
         } else {
             console.log("Insufficient funds.");
