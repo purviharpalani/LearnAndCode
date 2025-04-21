@@ -13,8 +13,8 @@ async function askQuestion(query: string): Promise<string> {
 }
 
 async function main() {
-  const account = new Account(10000, 5000);  // Example balance and daily limit
-  const atmService = new ATMService("1234", account);  // Example PIN
+  const account = new Account(10000, 5000);  
+  const atmService = new ATMService("1234", account); 
 
   let isAuthenticated = false;
 

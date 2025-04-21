@@ -25,7 +25,7 @@ export class ATMService {
       throw new Error("Incorrect PIN.");
     }
 
-    this.pinAttempts = 0; // Reset after successful authentication
+    this.pinAttempts = 0; 
   }
 
   getBalance(): number {
