@@ -1,11 +1,11 @@
 export class Account {
     private balance: number;
-    private dailyLimit: number;
+    private dailyWithdrawalLimit: number;
     private withdrawnToday: number = 0;
   
-    constructor(balance: number, dailyLimit: number) {
+    constructor(balance: number, dailyWithdrawalLimit: number) {
       this.balance = balance;
-      this.dailyLimit = dailyLimit;
+      this.dailyWithdrawalLimit = dailyWithdrawalLimit;
     }
   
     getBalance(): number {
@@ -16,7 +16,7 @@ export class Account {
       if (amount > this.balance) {
         throw new Error("Insufficient funds in your account.");
       }
-      if (this.withdrawnToday + amount > this.dailyLimit) {
+      if (this.withdrawnToday + amount > this.dailyWithdrawalLimit) {
         throw new Error("Daily withdrawal limit exceeded.");
       }
       this.balance -= amount;
