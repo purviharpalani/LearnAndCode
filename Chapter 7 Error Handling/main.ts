@@ -54,29 +54,47 @@ async function main() {
 
 async function withdrawCash(atmService: ATMService) {
   while (true) {
-    const pin = await askQuestion("Re-enter PIN to proceed: ");
+    const isAuthenticated = await authenticateUser(atmService);
+    if (!isAuthenticated) return;
+
+    const amount = await getWithdrawalAmount();
+    if (amount === null) continue;
+
     try {
-      atmService.authenticate(pin);
-
-      const amountStr = await askQuestion("Enter amount to withdraw: ");
-      const amount = parseInt(amountStr);
-
-      if (isNaN(amount) || amount <= 0) {
-        console.log("Invalid amount.");
-        continue;
-      }
-
       atmService.withdraw(amount);
       console.log("Withdrawal successful.");
       return;
     } catch (error: any) {
       ErrorHandler.handleError(error);
-      if (error.message.includes("Card blocked")) {
-        rl.close();
-        return;
-      }
     }
   }
 }
+
+async function authenticateUser(atmService: ATMService): Promise<boolean> {
+  const pin = await askQuestion("Re-enter PIN to proceed: ");
+  try {
+    atmService.authenticate(pin);
+    return true;
+  } catch (error: any) {
+    ErrorHandler.handleError(error);
+    if (error.message.includes("Card blocked")) {
+      rl.close();
+      return false;
+    }
+    return false;
+  }
+}
+
+async function getWithdrawalAmount(): Promise<number | null> {
+  const amountStr = await askQuestion("Enter amount to withdraw: ");
+  const amount = parseInt(amountStr);
+
+  if (isNaN(amount) || amount <= 0) {
+    console.log("Invalid amount.");
+    return null;
+  }
+  return amount;
+}
+
 
 main();
