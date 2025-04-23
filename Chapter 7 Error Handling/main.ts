@@ -3,13 +3,13 @@ import { ATMService } from './ATMService';
 import { Account } from './Account';
 import { ErrorHandler } from './ErrorHandler';
 
-const rl = readline.createInterface({
+const readlineInterface = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
 async function askQuestion(query: string): Promise<string> {
-  return new Promise(resolve => rl.question(query, resolve));
+  return new Promise(resolve => readlineInterface.question(query, resolve));
 }
 
 async function main() {
@@ -18,7 +18,6 @@ async function main() {
 
   let isAuthenticated = false;
 
-  // Authentication Loop
   while (!isAuthenticated) {
     const pin = await askQuestion("Enter your PIN: ");
     try {
@@ -30,7 +29,6 @@ async function main() {
     }
   }
 
-  // Main ATM interaction loop
   while (true) {
     console.log("\nATM Menu:");
     console.log("1. Check Balance");
@@ -44,7 +42,7 @@ async function main() {
       await withdrawCash(atmService);
     } else if (choice === '3') {
       console.log("Thank you for using the ATM.");
-      rl.close();
+      readlineInterface.close();
       return;
     } else {
       console.log("Invalid option.");
@@ -78,7 +76,7 @@ async function authenticateUser(atmService: ATMService): Promise<boolean> {
   } catch (error: any) {
     ErrorHandler.handleError(error);
     if (error.message.includes("Card blocked")) {
-      rl.close();
+      readlineInterface.close();
       return false;
     }
     return false;
