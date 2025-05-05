@@ -29,7 +29,6 @@ function displayCoordinates(coordinates: Coordinates | null): void {
 async function handleCoordinateLookup(service: GeocodeService) {
     try {
         const place = await getPlaceFromUser();
-        console.log(place);
         const coordinates = await service.getCoordinates(place);
         displayCoordinates(coordinates);
     } catch (error) {
