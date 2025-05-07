@@ -1,39 +1,35 @@
-import * as readline from "readline";
-import { GeocodeAdapter } from "./GeocodeAdapter";
-import { GeocodeService, Coordinates } from "./GeocodeService";
+import { GeocodeAdapter } from './GeocodeAdapter';
+import { GeocodeAPIClass } from './GeocodeAPIClass';
+import { GeocodeService } from './GeocodeService';
+import * as readline from 'readline';
 
-const geocodeService: GeocodeService = new GeocodeAdapter();
-
-function getPlaceFromUser(): Promise<string> {
+async function promptUserInput(question: string): Promise<string> {
     const rl = readline.createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
     });
 
     return new Promise((resolve) => {
-        rl.question("Enter a place name: ", (place) => {
+        rl.question(question, (answer) => {
             rl.close();
-            resolve(place);
+            resolve(answer);
         });
     });
 }
 
-function displayCoordinates(coordinates: Coordinates | null): void {
-    if (!coordinates) {
-        console.log("No results found for the given place.");
+async function main() {
+    const place = await promptUserInput('Enter a place name: ');
+
+    const apiClient = new GeocodeAPIClass();
+    const geocodeService: GeocodeService = new GeocodeAdapter(apiClient);
+
+    const coordinates = await geocodeService.getCoordinates(place);
+
+    if (coordinates) {
+        console.log(`Coordinates of "${place}":`, coordinates);
     } else {
-        console.log(`Latitude: ${coordinates.latitude}, Longitude: ${coordinates.longitude}`);
+        console.log(`No coordinates found for "${place}".`);
     }
 }
 
-async function handleCoordinateLookup(service: GeocodeService) {
-    try {
-        const place = await getPlaceFromUser();
-        const coordinates = await service.getCoordinates(place);
-        displayCoordinates(coordinates);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-
-handleCoordinateLookup(geocodeService);
+main().catch((err) => console.error('Unhandled error in main:', err));
