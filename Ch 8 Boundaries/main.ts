@@ -4,14 +4,14 @@ import { GeocodeService } from './GeocodeService';
 import * as readline from 'readline';
 
 async function promptUserInput(question: string): Promise<string> {
-    const rl = readline.createInterface({
+    const inputReader = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
     });
 
     return new Promise((resolve) => {
-        rl.question(question, (answer) => {
-            rl.close();
+        inputReader.question(question, (answer) => {
+            inputReader.close();
             resolve(answer);
         });
     });
