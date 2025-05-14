@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/prompt-sync": "^4.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
