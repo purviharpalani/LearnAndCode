@@ -7,7 +7,7 @@ describe("Divisor Matching Function", () => {
     expect(countConsecutiveMatchesWithSameDivisors (result)).toBe(2);
   });
 
-  test("should return 9 for k=100", () => {
+  test("should return 15 for k=100", () => {
     expect(countConsecutiveMatchesWithSameDivisors (100)).toBe(15);
   });
 
