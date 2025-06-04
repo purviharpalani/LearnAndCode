@@ -9,6 +9,12 @@ function countDivisors(n: number): number {
 }
 
 export function countConsecutiveMatchesWithSameDivisors(k: number): number {
+  if (typeof k !== "number" || isNaN(k)) {
+    throw new Error("Input must be a number");
+  }
+
+  if (k <= 1) return 0;
+
   let matchCount = 0;
   for (let n = 2; n <= k; n++) {
     if (countDivisors(n) === countDivisors(n - 1)) {
