@@ -18,7 +18,12 @@ describe("Divisor Matching Function", () => {
     expect(countConsecutiveMatchesWithSameDivisors(0)).toBe(0);
   });
 
-    test("should return 0 for negative k (invalid input)", () => {
+  test("should return 0 for negative k (invalid input)", () => {
     expect(countConsecutiveMatchesWithSameDivisors(-10)).toBe(0);
+  });
+
+  test("should throw error when input is not a number", () => {
+  // @ts-ignore
+    expect(() => countConsecutiveMatchesWithSameDivisors("abc")).toThrow("Input must be a number");
   });
 });
