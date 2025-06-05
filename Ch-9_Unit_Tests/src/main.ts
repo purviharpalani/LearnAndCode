@@ -6,11 +6,11 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-rl.question("Enter a non-negative integer: ", (answer) => {
+rl.question("Enter a non-negative integer: ", (userInput) => {
   try {
-    const input = parseInt(answer, 10);
-    const result = MatchCalculator.countConsecutiveMatchesWithSameDivisors(input);
-    console.log(`Consecutive numbers with same number of divisors: ${result}`);
+    const parsedInput = parseInt(userInput, 10);
+    const result = MatchCalculator.countConsecutiveNumbersWithSameDivisorCount(parsedInput);
+    console.log(`Consecutive numbers with the same number of divisors: ${result}`);
   } catch (error: any) {
     console.error("Error:", error.message);
   } finally {
