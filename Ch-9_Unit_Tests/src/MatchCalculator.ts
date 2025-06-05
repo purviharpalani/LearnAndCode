@@ -2,22 +2,22 @@ import { Validator } from "./Validator";
 import { DivisorCounter } from "./DivisorCounter";
 
 export class MatchCalculator {
-  static countConsecutiveMatchesWithSameDivisors(limit: number): number {
-    Validator.validatePositiveInteger(limit);
+  static countConsecutiveNumbersWithSameDivisorCount(upperLimit: number): number {
+    Validator.validatePositiveInteger(upperLimit);
 
-    if (limit <= 1) return 0;
+    if (upperLimit <= 1) return 0;
 
-    let matchCount = 0;
+    let consecutiveMatchCount = 0;
 
-    for (let n = 2; n <= limit; n++) {
-      const current = DivisorCounter.countDivisors(n);
-      const previous = DivisorCounter.countDivisors(n - 1);
+    for (let currentNumber = 2; currentNumber <= upperLimit; currentNumber++) {
+      const currentDivisorCount = DivisorCounter.getDivisorCount(currentNumber);
+      const previousDivisorCount = DivisorCounter.getDivisorCount(currentNumber - 1);
 
-      if (current === previous) {
-        matchCount++;
+      if (currentDivisorCount === previousDivisorCount) {
+        consecutiveMatchCount++;
       }
     }
 
-    return matchCount;
+    return consecutiveMatchCount;
   }
 }

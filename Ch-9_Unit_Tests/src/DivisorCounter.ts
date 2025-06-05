@@ -1,14 +1,15 @@
 export class DivisorCounter {
-  static countDivisors(n: number): number {
-    let count = 0;
-    const sqrt = Math.floor(Math.sqrt(n));
+  static getDivisorCount(targetNumber: number): number {
+    let divisorCount = 0;
+    const squareRoot = Math.floor(Math.sqrt(targetNumber));
 
-    for (let i = 1; i <= sqrt; i++) {
-      if (n % i === 0) {
-        count += (i * i === n) ? 1 : 2;
+    for (let divisor = 1; divisor <= squareRoot; divisor++) {
+      if (targetNumber % divisor === 0) {
+        const isPerfectSquare = divisor * divisor === targetNumber;
+        divisorCount += isPerfectSquare ? 1 : 2;
       }
     }
 
-    return count;
+    return divisorCount;
   }
 }
