@@ -1,17 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
-import { ApiRequestLog } from './ApiRequestLog';
+import {
+  Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn
+} from 'typeorm';
 
 @Entity('external_servers')
 export class ExternalServer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
-
-  @Column()
-  api_key: string;
 
   @Column()
   base_url: string;
@@ -19,19 +16,17 @@ export class ExternalServer {
   @Column({ default: true })
   is_active: boolean;
 
-  @Column({ nullable: true })
-  last_accessed: Date;
-
-  @Column({ nullable: true })
-  request_limit: number;
-
-  @Column({ default: 0 })
-  requests_made: number;
-
   @CreateDateColumn()
   created_at: Date;
 
-  // Relationships
-  @OneToMany(() => ApiRequestLog, apiRequestLog => apiRequestLog.server)
-  apiRequestLogs: ApiRequestLog[];
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+last_accessed: Date;
+
+@Column({ nullable: true }) // or false if required
+api_key: string;
+
+
 }

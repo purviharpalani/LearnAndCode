@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
+import {
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn
+} from 'typeorm';
 import { User } from './User';
 
 @Entity('email_logs')
@@ -13,19 +14,18 @@ export class EmailLog {
   @Column()
   subject: string;
 
-  @Column('text')
+  @Column()
   content: string;
 
   @Column()
-  status: string;
+  status: 'sent' | 'failed';
 
   @Column({ nullable: true })
   error_message: string;
 
   @CreateDateColumn()
-  sent_at: Date;
+  created_at: Date;
 
-  // Relationships
   @ManyToOne(() => User, user => user.emailLogs)
   @JoinColumn({ name: 'user_id' })
   user: User;

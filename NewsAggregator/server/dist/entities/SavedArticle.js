@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SavedArticle = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
 const User_1 = require("./User");
 const NewsArticle_1 = require("./NewsArticle");
 let SavedArticle = class SavedArticle {
@@ -30,16 +29,12 @@ __decorate([
     __metadata("design:type", Number)
 ], SavedArticle.prototype, "article_id", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], SavedArticle.prototype, "saved_at", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, user => user.savedArticles),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", User_1.User)
 ], SavedArticle.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => NewsArticle_1.NewsArticle, article => article.savedByUsers),
+    (0, typeorm_1.ManyToOne)(() => NewsArticle_1.NewsArticle),
     (0, typeorm_1.JoinColumn)({ name: 'article_id' }),
     __metadata("design:type", NewsArticle_1.NewsArticle)
 ], SavedArticle.prototype, "article", void 0);

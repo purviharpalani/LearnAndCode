@@ -11,9 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsArticle = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
-const SavedArticle_1 = require("./SavedArticle");
-const Notification_1 = require("./Notification");
+const NewsCategory_1 = require("./NewsCategory");
 let NewsArticle = class NewsArticle {
 };
 exports.NewsArticle = NewsArticle;
@@ -26,9 +24,13 @@ __decorate([
     __metadata("design:type", String)
 ], NewsArticle.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text'),
+    (0, typeorm_1.Column)({ nullable: true, length: 1000 }),
     __metadata("design:type", String)
 ], NewsArticle.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], NewsArticle.prototype, "url", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -36,31 +38,32 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], NewsArticle.prototype, "url", void 0);
+], NewsArticle.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], NewsArticle.prototype, "image_url", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], NewsArticle.prototype, "likes", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], NewsArticle.prototype, "dislikes", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], NewsArticle.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], NewsArticle.prototype, "external_id", void 0);
+    (0, typeorm_1.ManyToOne)(() => NewsCategory_1.NewsCategory, category => category.articles),
+    (0, typeorm_1.JoinColumn)({ name: 'category_id' }),
+    __metadata("design:type", NewsCategory_1.NewsCategory)
+], NewsArticle.prototype, "categoryEntity", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], NewsArticle.prototype, "category", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => SavedArticle_1.SavedArticle, savedArticle => savedArticle.article),
-    __metadata("design:type", Array)
-], NewsArticle.prototype, "savedByUsers", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Notification_1.Notification, notification => notification.relatedArticle),
-    __metadata("design:type", Array)
-], NewsArticle.prototype, "notifications", void 0);
+    (0, typeorm_1.Column)({ name: 'category_id' }),
+    __metadata("design:type", Number)
+], NewsArticle.prototype, "categoryId", void 0);
 exports.NewsArticle = NewsArticle = __decorate([
     (0, typeorm_1.Entity)('news_articles')
 ], NewsArticle);

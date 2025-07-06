@@ -9,16 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SessionRepository = void 0;
+exports.UserSessionRepository = void 0;
 const db_1 = require("../config/db");
 const UserSession_1 = require("../entities/UserSession");
-exports.SessionRepository = {
-    findByToken(token) {
+class UserSessionRepository {
+    static get repo() {
+        return db_1.AppDataSource.getRepository(UserSession_1.UserSession);
+    }
+    static findByToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.AppDataSource.getRepository(UserSession_1.UserSession).findOne({
+            return yield this.repo.findOne({
                 where: { session_token: token },
                 relations: ['user'],
             });
         });
     }
-};
+    static createAndSave(session) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newSession = this.repo.create(session);
+            return yield this.repo.save(newSession);
+        });
+    }
+    static invalidateAllForUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update({ user_id: userId }, { is_active: false });
+        });
+    }
+}
+exports.UserSessionRepository = UserSessionRepository;

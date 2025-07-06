@@ -11,7 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsCategory = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
+const NotificationPreferences_1 = require("./NotificationPreferences");
+const NewsArticle_1 = require("./NewsArticle");
 let NewsCategory = class NewsCategory {
 };
 exports.NewsCategory = NewsCategory;
@@ -24,21 +25,21 @@ __decorate([
     __metadata("design:type", String)
 ], NewsCategory.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text', { nullable: true }),
-    __metadata("design:type", String)
-], NewsCategory.prototype, "description", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: true }),
-    __metadata("design:type", Boolean)
-], NewsCategory.prototype, "is_active", void 0);
-__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], NewsCategory.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], NewsCategory.prototype, "created_by", void 0);
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], NewsCategory.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => NotificationPreferences_1.NotificationPreference, (pref) => pref.category),
+    __metadata("design:type", Array)
+], NewsCategory.prototype, "preferences", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => NewsArticle_1.NewsArticle, (article) => article.categoryEntity),
+    __metadata("design:type", Array)
+], NewsCategory.prototype, "articles", void 0);
 exports.NewsCategory = NewsCategory = __decorate([
     (0, typeorm_1.Entity)('news_categories')
 ], NewsCategory);

@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
-import { SavedArticle } from './SavedArticle';
-import { Notification } from './Notification';
+import {
+  Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn
+} from 'typeorm';
+
+import { NewsCategory } from './NewsCategory';
 
 @Entity('news_articles')
 export class NewsArticle {
@@ -11,31 +12,35 @@ export class NewsArticle {
   @Column()
   title: string;
 
-  @Column('text')
+  @Column({ nullable: true, length: 1000 })
   description: string;
+
+  @Column()
+  url: string;
 
   @Column()
   source: string;
 
   @Column()
-  url: string;
+  category: string;
 
   @Column({ nullable: true })
   image_url: string;
 
+  @Column({ default: 0 })
+  likes: number;
+
+  @Column({ default: 0 })
+  dislikes: number;
+
   @CreateDateColumn()
   created_at: Date;
 
-  @Column({ nullable: true })
-  external_id: string;
+  @ManyToOne(() => NewsCategory, category => category.articles)
+  @JoinColumn({ name: 'category_id' })
+  categoryEntity: NewsCategory;
 
-  @Column()
-  category: string;
+  @Column({ name: 'category_id' })
+  categoryId: number;
 
-  // Relationships
-  @OneToMany(() => SavedArticle, savedArticle => savedArticle.article)
-  savedByUsers: SavedArticle[];
-
-  @OneToMany(() => Notification, notification => notification.relatedArticle)
-  notifications: Notification[];
 }

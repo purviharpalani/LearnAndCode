@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
+import {
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn
+} from 'typeorm';
 import { ExternalServer } from './ExternalServer';
 
 @Entity('api_request_logs')
@@ -13,17 +14,17 @@ export class ApiRequestLog {
   @Column()
   endpoint: string;
 
-  @Column('text', { nullable: true })
+  @Column()
   request_params: string;
 
   @Column()
   response_code: number;
 
-  @Column('text', { nullable: true })
+  @Column()
   response_body: string;
 
   @Column()
-  request_time: number; // in milliseconds
+  request_time: number; // in ms
 
   @Column({ nullable: true })
   error_message: string;
@@ -31,8 +32,7 @@ export class ApiRequestLog {
   @CreateDateColumn()
   created_at: Date;
 
-  // Relationships
-  @ManyToOne(() => ExternalServer, server => server.apiRequestLogs)
+  @ManyToOne(() => ExternalServer)
   @JoinColumn({ name: 'server_id' })
   server: ExternalServer;
 }

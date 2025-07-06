@@ -13,29 +13,42 @@ exports.UserRepository = void 0;
 const db_1 = require("../config/db");
 const User_1 = require("../entities/User");
 class UserRepository {
-    static getRepo() {
+    static get repo() {
         return db_1.AppDataSource.getRepository(User_1.User);
     }
-    static create(data) {
-        return this.getRepo().create(data);
+    static create(userData) {
+        return this.repo.create(userData);
     }
-    static save(user) {
+    static save(userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newUser = this.getRepo().create(user);
-            return yield this.getRepo().save(newUser);
+            const user = this.repo.create(userData);
+            return yield this.repo.save(user);
         });
     }
-    static findOne(condition) {
+    static findOneBy(condition) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.getRepo().findOne({ where: condition });
+            return yield this.repo.findOne({ where: condition });
         });
     }
-    static exists(email, username) {
+    static existsByEmailOrUsername(email, username) {
         return __awaiter(this, void 0, void 0, function* () {
-            const existing = yield this.getRepo().findOne({
+            const existing = yield this.repo.findOne({
                 where: [{ email }, { username }],
             });
             return !!existing;
+        });
+    }
+    static findById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.findOne({ where: { id } });
+        });
+    }
+    static findAllWithPreferences() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.find({
+                where: { is_active: true },
+                relations: ['notificationPreferences'],
+            });
         });
     }
 }

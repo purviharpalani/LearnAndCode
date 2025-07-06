@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserSession = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
 const User_1 = require("./User");
 let UserSession = class UserSession {
 };

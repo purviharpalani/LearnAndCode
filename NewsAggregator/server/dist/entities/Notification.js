@@ -11,9 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Notification = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
 const User_1 = require("./User");
-const NewsArticle_1 = require("./NewsArticle");
 let Notification = class Notification {
 };
 exports.Notification = Notification;
@@ -30,27 +28,22 @@ __decorate([
     __metadata("design:type", String)
 ], Notification.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text'),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Notification.prototype, "message", void 0);
-__decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Notification.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
 ], Notification.prototype, "related_article_id", void 0);
 __decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Notification.prototype, "created_at", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, user => user.notifications),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", User_1.User)
 ], Notification.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => NewsArticle_1.NewsArticle, article => article.notifications, { nullable: true }),
-    (0, typeorm_1.JoinColumn)({ name: 'related_article_id' }),
-    __metadata("design:type", NewsArticle_1.NewsArticle)
-], Notification.prototype, "relatedArticle", void 0);
 exports.Notification = Notification = __decorate([
     (0, typeorm_1.Entity)('notifications')
 ], Notification);

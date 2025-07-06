@@ -1,24 +1,30 @@
 import { AppDataSource } from '../config/db';
 import { SavedArticle } from '../entities/SavedArticle';
-import { NewsArticle } from '../entities/NewsArticle';
+import { Repository } from 'typeorm';
 import { User } from '../entities/User';
+import { NewsArticle } from '../entities/NewsArticle';
 
-export const SavedArticleRepository = {
-  async findByUser(userId: number) {
-    return await AppDataSource.getRepository(SavedArticle).find({
+export class SavedArticleRepository {
+  private static get repo(): Repository<SavedArticle> {
+    return AppDataSource.getRepository(SavedArticle);
+  }
+
+  static async findByUser(userId: number): Promise<SavedArticle[]> {
+    return this.repo.find({
       where: { user: { id: userId } },
       relations: ['article'],
     });
-  },
-  async findByUserAndArticle(userId: number, articleId: number) {
-    return await AppDataSource.getRepository(SavedArticle).findOne({
+  }
+
+  static async findByUserAndArticle(userId: number, articleId: number): Promise<SavedArticle | null> {
+    return this.repo.findOne({
       where: { user: { id: userId }, article: { id: articleId } },
       relations: ['user', 'article'],
     });
-  },
-  async save(user: User, article: NewsArticle) {
-    const repo = AppDataSource.getRepository(SavedArticle);
-    const entry = repo.create({ user, article });
-    await repo.save(entry);
   }
-};
+
+  static async save(user: User, article: NewsArticle): Promise<SavedArticle> {
+    const entry = this.repo.create({ user, article });
+    return await this.repo.save(entry);
+  }
+}

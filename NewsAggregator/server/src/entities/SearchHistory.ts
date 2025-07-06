@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
+import {
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn
+} from 'typeorm';
 import { User } from './User';
 
 @Entity('search_history')
@@ -17,9 +18,8 @@ export class SearchHistory {
   results_count: number;
 
   @CreateDateColumn()
-  searched_at: Date;
+  created_at: Date;
 
-  // Relationships
   @ManyToOne(() => User, user => user.searchHistory)
   @JoinColumn({ name: 'user_id' })
   user: User;

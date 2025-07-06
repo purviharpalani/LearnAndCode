@@ -1,40 +1,28 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.requireSession = void 0;
-const db_1 = require("../config/db");
-const UserSession_1 = require("../entities/UserSession");
-const sessionRepo = db_1.AppDataSource.getRepository(UserSession_1.UserSession);
-const requireSession = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith('Session ')) {
-            res.status(401).json({ error: 'Session token missing' });
-            return; // ✅ Exit early
-        }
-        const session_token = authHeader.replace('Session ', '').trim();
-        const session = yield sessionRepo.findOne({
-            where: { session_token },
-            relations: ['user'],
-        });
-        if (!session || !session.user.is_active) {
-            res.status(401).json({ error: 'Invalid or expired session' });
+const UserSessionRepository_1 = require("../repositories/UserSessionRepository");
+const Logger_1 = require("../infrastructure/logger/Logger");
+const logger = Logger_1.Logger.getInstance();
+const requireSession = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!(authHeader === null || authHeader === void 0 ? void 0 : authHeader.startsWith('Session '))) {
+        res.status(401).json({ error: 'Session token missing or invalid' });
+        return;
+    }
+    const token = authHeader.replace('Session ', '').trim();
+    UserSessionRepository_1.UserSessionRepository.findByToken(token)
+        .then((session) => {
+        if (!session || !session.is_active || new Date(session.expires_at) < new Date()) {
+            res.status(401).json({ error: 'Session expired or invalid' });
             return;
         }
         req.user = session.user;
         next();
-    }
-    catch (err) {
-        console.error('[SESSION MIDDLEWARE ERROR]', err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
+    })
+        .catch((err) => {
+        Logger_1.Logger.getInstance().error('[Session Middleware] Error', err);
+        res.status(500).json({ error: 'Internal session error' });
+    });
+};
 exports.requireSession = requireSession;

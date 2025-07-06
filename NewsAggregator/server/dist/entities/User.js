@@ -11,14 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
-const UserSession_1 = require("./UserSession");
-const SavedArticle_1 = require("./SavedArticle");
-const EmailLog_1 = require("./EmailLog");
-const SearchHistory_1 = require("./SearchHistory");
-const NotificationConfig_1 = require("./NotificationConfig");
-const Notification_1 = require("./Notification");
-// Users Entity
+const index_1 = require("./index");
 let User = class User {
 };
 exports.User = User;
@@ -43,38 +36,41 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password_hash", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
-__decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], User.prototype, "is_active", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => UserSession_1.UserSession, userSession => userSession.user),
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], User.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => index_1.UserSession, session => session.user),
     __metadata("design:type", Array)
 ], User.prototype, "sessions", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => SavedArticle_1.SavedArticle, savedArticle => savedArticle.user),
+    (0, typeorm_1.OneToMany)(() => index_1.SavedArticle, saved => saved.user),
     __metadata("design:type", Array)
 ], User.prototype, "savedArticles", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => EmailLog_1.EmailLog, emailLog => emailLog.user),
+    (0, typeorm_1.OneToMany)(() => index_1.EmailLog, emailLog => emailLog.user),
     __metadata("design:type", Array)
 ], User.prototype, "emailLogs", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => SearchHistory_1.SearchHistory, searchHistory => searchHistory.user),
+    (0, typeorm_1.OneToMany)(() => index_1.SearchHistory, sh => sh.user),
     __metadata("design:type", Array)
 ], User.prototype, "searchHistory", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Notification_1.Notification, notification => notification.user),
+    (0, typeorm_1.OneToMany)(() => index_1.Notification, n => n.user),
     __metadata("design:type", Array)
 ], User.prototype, "notifications", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => NotificationConfig_1.NotificationConfig, notificationConfig => notificationConfig.user),
+    (0, typeorm_1.OneToMany)(() => index_1.ArticleReaction, r => r.user),
     __metadata("design:type", Array)
-], User.prototype, "notificationConfigs", void 0);
+], User.prototype, "reactions", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => index_1.NotificationPreference, p => p.user),
+    __metadata("design:type", Array)
+], User.prototype, "notificationPreferences", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)('user')
 ], User);
-exports.default = User;

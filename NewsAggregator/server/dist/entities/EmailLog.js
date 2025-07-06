@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailLog = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
 const User_1 = require("./User");
 let EmailLog = class EmailLog {
 };
@@ -29,7 +28,7 @@ __decorate([
     __metadata("design:type", String)
 ], EmailLog.prototype, "subject", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text'),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], EmailLog.prototype, "content", void 0);
 __decorate([
@@ -43,7 +42,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], EmailLog.prototype, "sent_at", void 0);
+], EmailLog.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, user => user.emailLogs),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),

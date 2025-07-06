@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SearchHistory = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
 const User_1 = require("./User");
 let SearchHistory = class SearchHistory {
 };
@@ -35,7 +34,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], SearchHistory.prototype, "searched_at", void 0);
+], SearchHistory.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, user => user.searchHistory),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),

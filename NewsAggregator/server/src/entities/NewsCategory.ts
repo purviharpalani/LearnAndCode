@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { NotificationPreference } from './NotificationPreferences';
+import { NewsArticle } from './NewsArticle';
 
 @Entity('news_categories')
 export class NewsCategory {
@@ -9,15 +17,16 @@ export class NewsCategory {
   @Column({ unique: true })
   name: string;
 
-  @Column('text', { nullable: true })
-  description: string;
-
-  @Column({ default: true })
-  is_active: boolean;
-
   @CreateDateColumn()
   created_at: Date;
 
-  @Column()
-  created_by: number; // This could be a foreign key to users table if needed
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  // Relationships (optional but useful)
+  @OneToMany(() => NotificationPreference, (pref) => pref.category)
+  preferences: NotificationPreference[];
+
+  @OneToMany(() => NewsArticle, (article) => article.categoryEntity)
+  articles: NewsArticle[];
 }

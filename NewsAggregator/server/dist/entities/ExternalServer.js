@@ -11,8 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExternalServer = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
-const ApiRequestLog_1 = require("./ApiRequestLog");
 let ExternalServer = class ExternalServer {
 };
 exports.ExternalServer = ExternalServer;
@@ -21,13 +19,9 @@ __decorate([
     __metadata("design:type", Number)
 ], ExternalServer.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], ExternalServer.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], ExternalServer.prototype, "api_key", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -37,25 +31,17 @@ __decorate([
     __metadata("design:type", Boolean)
 ], ExternalServer.prototype, "is_active", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Date)
-], ExternalServer.prototype, "last_accessed", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Number)
-], ExternalServer.prototype, "request_limit", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: 0 }),
-    __metadata("design:type", Number)
-], ExternalServer.prototype, "requests_made", void 0);
-__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], ExternalServer.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => ApiRequestLog_1.ApiRequestLog, apiRequestLog => apiRequestLog.server),
-    __metadata("design:type", Array)
-], ExternalServer.prototype, "apiRequestLogs", void 0);
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], ExternalServer.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    __metadata("design:type", Date)
+], ExternalServer.prototype, "last_accessed", void 0);
 exports.ExternalServer = ExternalServer = __decorate([
     (0, typeorm_1.Entity)('external_servers')
 ], ExternalServer);

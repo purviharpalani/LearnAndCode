@@ -12,28 +12,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SavedArticleRepository = void 0;
 const db_1 = require("../config/db");
 const SavedArticle_1 = require("../entities/SavedArticle");
-exports.SavedArticleRepository = {
-    findByUser(userId) {
+class SavedArticleRepository {
+    static get repo() {
+        return db_1.AppDataSource.getRepository(SavedArticle_1.SavedArticle);
+    }
+    static findByUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.AppDataSource.getRepository(SavedArticle_1.SavedArticle).find({
+            return this.repo.find({
                 where: { user: { id: userId } },
                 relations: ['article'],
             });
         });
-    },
-    findByUserAndArticle(userId, articleId) {
+    }
+    static findByUserAndArticle(userId, articleId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.AppDataSource.getRepository(SavedArticle_1.SavedArticle).findOne({
+            return this.repo.findOne({
                 where: { user: { id: userId }, article: { id: articleId } },
                 relations: ['user', 'article'],
             });
         });
-    },
-    save(user, article) {
+    }
+    static save(user, article) {
         return __awaiter(this, void 0, void 0, function* () {
-            const repo = db_1.AppDataSource.getRepository(SavedArticle_1.SavedArticle);
-            const entry = repo.create({ user, article });
-            yield repo.save(entry);
+            const entry = this.repo.create({ user, article });
+            return yield this.repo.save(entry);
         });
     }
-};
+}
+exports.SavedArticleRepository = SavedArticleRepository;

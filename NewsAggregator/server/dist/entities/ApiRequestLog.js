@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiRequestLog = void 0;
 const typeorm_1 = require("typeorm");
-require("reflect-metadata");
 const ExternalServer_1 = require("./ExternalServer");
 let ApiRequestLog = class ApiRequestLog {
 };
@@ -29,7 +28,7 @@ __decorate([
     __metadata("design:type", String)
 ], ApiRequestLog.prototype, "endpoint", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text', { nullable: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], ApiRequestLog.prototype, "request_params", void 0);
 __decorate([
@@ -37,7 +36,7 @@ __decorate([
     __metadata("design:type", Number)
 ], ApiRequestLog.prototype, "response_code", void 0);
 __decorate([
-    (0, typeorm_1.Column)('text', { nullable: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], ApiRequestLog.prototype, "response_body", void 0);
 __decorate([
@@ -53,7 +52,7 @@ __decorate([
     __metadata("design:type", Date)
 ], ApiRequestLog.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => ExternalServer_1.ExternalServer, server => server.apiRequestLogs),
+    (0, typeorm_1.ManyToOne)(() => ExternalServer_1.ExternalServer),
     (0, typeorm_1.JoinColumn)({ name: 'server_id' }),
     __metadata("design:type", ExternalServer_1.ExternalServer)
 ], ApiRequestLog.prototype, "server", void 0);

@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
+import {
+  Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn
+} from 'typeorm';
 import { User } from './User';
 import { NewsArticle } from './NewsArticle';
 
@@ -14,15 +15,11 @@ export class SavedArticle {
   @Column()
   article_id: number;
 
-  @CreateDateColumn()
-  saved_at: Date;
-
-  // Relationships
   @ManyToOne(() => User, user => user.savedArticles)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => NewsArticle, article => article.savedByUsers)
+  @ManyToOne(() => NewsArticle)
   @JoinColumn({ name: 'article_id' })
   article: NewsArticle;
 }

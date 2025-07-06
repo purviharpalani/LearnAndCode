@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import "reflect-metadata";
+import {
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, JoinColumn
+} from 'typeorm';
 import { User } from './User';
 
 @Entity('user_sessions')
@@ -22,7 +23,6 @@ export class UserSession {
   @Column({ default: true })
   is_active: boolean;
 
-  // Relationships
   @ManyToOne(() => User, user => user.sessions)
   @JoinColumn({ name: 'user_id' })
   user: User;
