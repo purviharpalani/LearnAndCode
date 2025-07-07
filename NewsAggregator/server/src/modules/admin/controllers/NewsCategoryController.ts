@@ -3,17 +3,19 @@ import { Request, Response } from 'express';
 import { NewsCategoryRepository } from '../../../repositories/NewsCategoryRepository';
 
 export class NewsCategoryController {
-  static async addCategory(req: Request, res: Response) {
+  static async create(req: Request, res: Response) {
     const { name } = req.body;
-    if (!name) {
-      return res.status(400).json({ error: 'Category name is required' });
+
+    if (!name || typeof name !== 'string') {
+      return res.status(400).json({ error: 'Invalid category name' });
     }
 
-    try {
-      await NewsCategoryRepository.add(name);
-      res.status(201).json({ message: 'Category added' });
-    } catch (err: any) {
-      res.status(500).json({ error: 'Failed to add category' });
+    const exists = await NewsCategoryRepository.exists(name);
+    if (exists) {
+      return res.status(409).json({ error: 'Category already exists' });
     }
+
+    const category = await NewsCategoryRepository.add(name);
+    res.status(201).json(category);
   }
 }

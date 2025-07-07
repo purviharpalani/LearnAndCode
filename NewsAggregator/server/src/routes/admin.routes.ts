@@ -7,23 +7,14 @@ import { asyncHandler } from '../shared/utils/asyncHandler';
 
 const router = Router();
 
-// 🔐 Apply auth + admin guard to all routes below
 router.use(requireSession, authorizeAdmin);
 
-// ----------------------
-// 📡 External Servers
-// ----------------------
 router.get('/external-servers', asyncHandler(ExternalServerController.getAll));
 router.get('/external-servers/status', asyncHandler(ExternalServerController.getStatusList));
 router.get('/external-servers/:id', asyncHandler(ExternalServerController.getById));
 router.put('/external-servers/:id', asyncHandler(ExternalServerController.update));
 router.delete('/external-servers/:id', asyncHandler(ExternalServerController.delete));
-// router.get("/status", ExternalServerController.getStatus);
 
-
-// ----------------------
-// 🗂️ News Categories
-// ----------------------
 router.post('/news-categories', asyncHandler(NewsCategoryController.create));
 
 export default router;

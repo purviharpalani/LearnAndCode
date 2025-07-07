@@ -13,6 +13,11 @@ static async add(name: string): Promise<NewsCategory> {
     return await this.repo.save(category);
   }
 
+  static async exists(name: string): Promise<boolean> {
+    const found = await this.repo.findOneBy({ name });
+    return !!found;
+  }
+
   static async findByName(name: string): Promise<NewsCategory | null> {
     return await this.repo.findOne({ where: { name } });
   }

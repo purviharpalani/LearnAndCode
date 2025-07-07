@@ -20,9 +20,6 @@ export class NewsCategory {
   @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
-
   // Relationships (optional but useful)
   @OneToMany(() => NotificationPreference, (pref) => pref.category)
   preferences: NotificationPreference[];

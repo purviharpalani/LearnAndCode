@@ -54,8 +54,9 @@ export class ApiService {
     return res.data;
   }
 
-  static async addCategory(name: string): Promise<void> {
-  await httpClient.post('/news-categories', { name });
+  static async addNewsCategory(name: string): Promise<any[]> {
+  const res = await httpClient.post('/admin/news-categories', { name });
+  return res.data;
 }
 
 static async getExternalServerStatus(): Promise<any[]> {
