@@ -29,6 +29,8 @@ router.post('/articles/:id/hide', requireSession, authorizeAdmin, asyncHandler(M
 router.post('/news-categories/:id/toggle', requireSession, authorizeAdmin, asyncHandler(NewsCategoryController.toggleVisibility));
 router.get('/news-categories/hidden', requireSession, authorizeAdmin, asyncHandler(NewsCategoryController.getHiddenCategories));
 
+router.get('/reports', requireSession, authorizeAdmin, ModerationController.getReportedArticles);
+
 
 
 export default router;

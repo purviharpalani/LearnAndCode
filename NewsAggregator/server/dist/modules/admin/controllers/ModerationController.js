@@ -18,6 +18,18 @@ class ModerationController {
             res.json(reports);
         });
     }
+    static getReportedArticles(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const reports = yield repositories_1.ArticleReportRepository.getAll();
+                res.json(reports);
+            }
+            catch (err) {
+                //   this.logger.error('[REPORTED ARTICLES] ' + (err as Error).message);
+                res.status(500).json({ error: 'Failed to fetch reports' });
+            }
+        });
+    }
     static hideArticle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const articleId = parseInt(req.params.id, 10);

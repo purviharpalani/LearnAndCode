@@ -38,3 +38,18 @@ export interface Notification {
   message: string;
   created_at: string;
 }
+
+export interface ArticleReport {
+  id: number;
+  reason: string;
+  created_at: string;
+  article: {
+    id: number;
+    title: string;
+    url: string;
+  } | null;
+  user: {
+    id: number;
+    name: string;
+  } | null;
+}

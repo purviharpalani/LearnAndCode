@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleReport = exports.NewsCategory = exports.ExternalServer = exports.ApiRequestLog = exports.EmailLog = exports.NotificationPreference = exports.Notification = exports.SearchHistory = exports.ArticleReaction = exports.SavedArticle = exports.NewsArticle = exports.UserSession = exports.User = void 0;
+exports.ArticleReport = exports.BlockedKeyword = exports.NewsCategory = exports.ExternalServer = exports.ApiRequestLog = exports.EmailLog = exports.NotificationPreference = exports.Notification = exports.SearchHistory = exports.ArticleReaction = exports.SavedArticle = exports.NewsArticle = exports.UserSession = exports.User = void 0;
 var User_1 = require("./User");
 Object.defineProperty(exports, "User", { enumerable: true, get: function () { return User_1.User; } });
 var UserSession_1 = require("./UserSession");
@@ -25,5 +25,7 @@ var ExternalServer_1 = require("./ExternalServer");
 Object.defineProperty(exports, "ExternalServer", { enumerable: true, get: function () { return ExternalServer_1.ExternalServer; } });
 var NewsCategory_1 = require("./NewsCategory");
 Object.defineProperty(exports, "NewsCategory", { enumerable: true, get: function () { return NewsCategory_1.NewsCategory; } });
+var BlockedKeyword_1 = require("./BlockedKeyword");
+Object.defineProperty(exports, "BlockedKeyword", { enumerable: true, get: function () { return BlockedKeyword_1.BlockedKeyword; } });
 var ArticleReport_1 = require("./ArticleReport");
 Object.defineProperty(exports, "ArticleReport", { enumerable: true, get: function () { return ArticleReport_1.ArticleReport; } });

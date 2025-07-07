@@ -23,4 +23,5 @@ router.get('/reports', session_middleware_1.requireSession, auth_middleware_1.au
 router.post('/articles/:id/hide', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(ModerationController_1.ModerationController.hideArticle));
 router.post('/news-categories/:id/toggle', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.toggleVisibility));
 router.get('/news-categories/hidden', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.getHiddenCategories));
+router.get('/reports', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, ModerationController_1.ModerationController.getReportedArticles);
 exports.default = router;

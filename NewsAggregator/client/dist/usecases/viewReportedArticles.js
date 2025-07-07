@@ -11,11 +11,16 @@ async function viewReportedArticles() {
             return;
         }
         console.log('\n=== Reported Articles ===');
-        reports.forEach((r, i) => {
-            console.log(`\n${i + 1}. Article: ${r.article.title}`);
-            console.log(`   Reported by: ${r.user.username}`);
-            console.log(`   Reason: ${r.reason}`);
-            console.log(`   Reported on: ${r.reported_at}`);
+        reports.forEach((report) => {
+            if (!report.article) {
+                console.log(`[${report.id}] Article not found (possibly deleted).`);
+                return;
+            }
+            console.log(`\n[${report.id}] ${report.article.title}`);
+            console.log(`Reason: ${report.reason}`);
+            console.log(`Reported By: ${report.user?.name || 'Unknown'}`);
+            console.log(`URL: ${report.article.url}`);
+            console.log(`Date: ${new Date(report.created_at).toLocaleString()}`);
         });
     }
     catch (err) {

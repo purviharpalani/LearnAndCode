@@ -8,15 +8,6 @@ export class ArticleReportRepository {
         return AppDataSource.getRepository(ArticleReport);
     }
 
-    static async createReport(report: Partial<ArticleReport>): Promise<ArticleReport> {
-        const entry = this.repo.create(report);
-        return this.repo.save(entry);
-    }
-
-    static async countReportsForArticle(articleId: number): Promise<number> {
-        return this.repo.count({ where: { article: { id: articleId } } });
-    }
-
     static async findAll(): Promise<ArticleReport[]> {
         return this.repo.find({ relations: ['article', 'user'] });
     }
@@ -26,5 +17,31 @@ export class ArticleReportRepository {
         await this.repo.save(report);
 
         await NewsArticleRepository.incrementReportCount(articleId);
+    }
+
+    static async getAll(): Promise<ArticleReport[]> {
+        return this.repo.find({
+            relations: ['article', 'user'],
+            order: { reported_at: 'DESC' },
+        });
+    }
+
+    static async countReportsForArticle(articleId: number): Promise<number> {
+        return this.repo.count({
+            where: { article: { id: articleId } },
+        });
+    }
+
+    static async createReport(data: {
+        article: any;
+        user: any;
+        reason: string;
+    }): Promise<ArticleReport> {
+        const report = this.repo.create({
+            article: data.article,
+            user: data.user,
+            reason: data.reason,
+        });
+        return this.repo.save(report);
     }
 }

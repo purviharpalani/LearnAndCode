@@ -70,9 +70,6 @@ class ApiService {
     static async reportArticle(articleId, reason) {
         return httpClient_1.httpClient.post(`/articles/report`, { articleId, reason }, { withCredentials: true });
     }
-    static async getReportedArticles() {
-        return httpClient_1.httpClient.get('/admin/reports').then(res => res.data);
-    }
     static async hideArticle(articleId) {
         return httpClient_1.httpClient.post(`/admin/articles/${articleId}/hide`);
     }
@@ -81,6 +78,10 @@ class ApiService {
     }
     static async getHiddenCategories() {
         const res = await httpClient_1.httpClient.get('/admin/news-categories/hidden');
+        return res.data;
+    }
+    static async getReportedArticles() {
+        const res = await httpClient_1.httpClient.get('/admin/reports');
         return res.data;
     }
 }

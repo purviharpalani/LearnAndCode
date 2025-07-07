@@ -5,6 +5,7 @@ import {
   SignupDTO,
   NewsArticle,
   UserResponse,
+  ArticleReport
 } from './types';
 
 export class ApiService {
@@ -90,10 +91,6 @@ export class ApiService {
     return httpClient.post(`/articles/report`, { articleId, reason }, { withCredentials: true });
   }
 
-  static async getReportedArticles() {
-    return httpClient.get('/admin/reports').then(res => res.data);
-  }
-
   static async hideArticle(articleId: number) {
     return httpClient.post(`/admin/articles/${articleId}/hide`);
   }
@@ -106,4 +103,10 @@ export class ApiService {
     const res = await httpClient.get('/admin/news-categories/hidden');
     return res.data;
   }
+
+  static async getReportedArticles(): Promise<ArticleReport[]> {
+  const res = await httpClient.get('/admin/reports');
+  return res.data;
+}
+
 }

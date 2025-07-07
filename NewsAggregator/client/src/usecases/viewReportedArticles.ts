@@ -10,7 +10,7 @@ type ReportedArticle = {
 
 export async function viewReportedArticles(): Promise<void> {
   try {
-    const reports: ReportedArticle[] = await ApiService.getReportedArticles();
+    const reports = await ApiService.getReportedArticles();
 
     if (!reports.length) {
       console.log('No reported articles.');
@@ -18,13 +18,20 @@ export async function viewReportedArticles(): Promise<void> {
     }
 
     console.log('\n=== Reported Articles ===');
-    reports.forEach((r: ReportedArticle, i: number) => {
-      console.log(`\n${i + 1}. Article: ${r.article.title}`);
-      console.log(`   Reported by: ${r.user.username}`);
-      console.log(`   Reason: ${r.reason}`);
-      console.log(`   Reported on: ${r.reported_at}`);
+    reports.forEach((report) => {
+      if (!report.article) {
+        console.log(`[${report.id}] Article not found (possibly deleted).`);
+        return;
+      }
+
+      console.log(`\n[${report.id}] ${report.article.title}`);
+      console.log(`Reason: ${report.reason}`);
+      console.log(`Reported By: ${report.user?.name || 'Unknown'}`); 
+      console.log(`URL: ${report.article.url}`);
+      console.log(`Date: ${new Date(report.created_at).toLocaleString()}`);
     });
   } catch (err: any) {
     console.error('Failed to fetch reports:', err.message);
   }
 }
+
