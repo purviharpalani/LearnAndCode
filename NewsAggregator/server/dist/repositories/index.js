@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExternalServerRepository = exports.ApiRequestLogRepository = exports.EmailLogRepository = exports.NotificationPreferenceRepository = exports.SearchHistoryRepository = exports.ArticleReactionRepository = exports.NewsArticleRepository = exports.NotificationRepository = exports.SavedArticleRepository = exports.UserSessionRepository = exports.UserRepository = void 0;
+exports.ArticleReportRepository = exports.BlockedKeywordRepository = exports.ExternalServerRepository = exports.ApiRequestLogRepository = exports.EmailLogRepository = exports.NotificationPreferenceRepository = exports.SearchHistoryRepository = exports.ArticleReactionRepository = exports.NewsArticleRepository = exports.NotificationRepository = exports.SavedArticleRepository = exports.UserSessionRepository = exports.UserRepository = void 0;
 var UserRepository_1 = require("./UserRepository");
 Object.defineProperty(exports, "UserRepository", { enumerable: true, get: function () { return UserRepository_1.UserRepository; } });
 var UserSessionRepository_1 = require("./UserSessionRepository");
@@ -23,3 +23,7 @@ var ApiRequestLogRepository_1 = require("./ApiRequestLogRepository");
 Object.defineProperty(exports, "ApiRequestLogRepository", { enumerable: true, get: function () { return ApiRequestLogRepository_1.ApiRequestLogRepository; } });
 var ExternalServerRepository_1 = require("./ExternalServerRepository");
 Object.defineProperty(exports, "ExternalServerRepository", { enumerable: true, get: function () { return ExternalServerRepository_1.ExternalServerRepository; } });
+var BlockedKeywordRepository_1 = require("./BlockedKeywordRepository");
+Object.defineProperty(exports, "BlockedKeywordRepository", { enumerable: true, get: function () { return BlockedKeywordRepository_1.BlockedKeywordRepository; } });
+var ArticleReportRepository_1 = require("./ArticleReportRepository");
+Object.defineProperty(exports, "ArticleReportRepository", { enumerable: true, get: function () { return ArticleReportRepository_1.ArticleReportRepository; } });

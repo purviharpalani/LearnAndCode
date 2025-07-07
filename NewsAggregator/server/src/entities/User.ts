@@ -1,7 +1,7 @@
 import {
   Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn
 } from 'typeorm';
-import { UserSession, SavedArticle, EmailLog, SearchHistory, Notification, ArticleReaction, NotificationPreference} from './index';
+import { UserSession, SavedArticle, EmailLog, SearchHistory, Notification, ArticleReaction, NotificationPreference, ArticleReport} from './index';
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
@@ -45,4 +45,7 @@ export class User {
 
   @OneToMany(() => NotificationPreference, p => p.user)
   notificationPreferences: NotificationPreference[];
+
+  @OneToMany(() => ArticleReport, (report) => report.user)
+  reports: ArticleReport[];
 }

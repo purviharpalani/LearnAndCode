@@ -45,7 +45,7 @@ class ExternalServerRepository {
             yield this.repo.update({ id }, { api_key });
         });
     }
-    static delete(id) {
+    static deleteById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.repo.delete(id);
         });

@@ -16,6 +16,7 @@ const HttpClient_1 = require("../http/HttpClient");
 const infercategory_1 = require("../../shared/utils/infercategory");
 const db_1 = require("../../config/db");
 const repositories_1 = require("../../repositories");
+const BlockedKeywordRepository_1 = require("../../repositories/BlockedKeywordRepository");
 class NewsApiOrgFetcher {
     constructor() {
         this.apiKey = process.env.NEWS_API_KEY || '62075ceceb4449638ea24a3acf33bcfa';
@@ -50,7 +51,7 @@ class NewsApiOrgFetcher {
                         },
                     });
                     const articles = data.articles || [];
-                    const mapped = articles.map((article) => {
+                    let mapped = articles.map((article) => {
                         var _a;
                         const news = new entities_1.NewsArticle();
                         news.title = article.title;
@@ -61,6 +62,12 @@ class NewsApiOrgFetcher {
                         news.categoryEntity = generalCategory;
                         news.created_at = new Date();
                         return news;
+                    });
+                    const blocked = yield BlockedKeywordRepository_1.BlockedKeywordRepository.getAll();
+                    const blockedWords = blocked.map(b => b.keyword.toLowerCase());
+                    mapped = mapped.filter((article) => {
+                        const text = `${article.title} ${article.description}`.toLowerCase();
+                        return !blockedWords.some(word => text.includes(word));
                     });
                     allArticles.push(...mapped);
                     this.logger.info(`[NewsApiOrg] Fetched ${mapped.length} articles for category ${category}`);

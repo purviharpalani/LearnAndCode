@@ -19,7 +19,8 @@ class ArticleService {
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield repositories_1.NewsArticleRepository.findByCreatedSince(new Date(0)); // all articles
+            const all = yield repositories_1.NewsArticleRepository.findByCreatedSince(new Date(0));
+            return this.filterVisible(all);
         });
     }
     saveArticle(user, articleId) {
@@ -37,7 +38,8 @@ class ArticleService {
     getSavedArticles(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const saved = yield repositories_1.SavedArticleRepository.findByUser(user.id);
-            return saved.map((s) => s.article);
+            const articles = saved.map((s) => s.article);
+            return this.filterVisible(articles);
         });
     }
     getTodaysHeadlines() {
@@ -46,24 +48,39 @@ class ArticleService {
             today.setHours(0, 0, 0, 0);
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            return yield repositories_1.NewsArticleRepository.findByCreatedSince(today); // assume repo handles filter internally
+            const articles = yield repositories_1.NewsArticleRepository.getByDateRange(today.toISOString(), tomorrow.toISOString());
+            return this.filterVisible(articles);
         });
     }
     getByDateRange(start, end) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield repositories_1.NewsArticleRepository.getByDateRange(start, end);
+            const articles = yield repositories_1.NewsArticleRepository.getByDateRange(start, end);
+            return this.filterVisible(articles);
         });
     }
     search(params) {
         return __awaiter(this, void 0, void 0, function* () {
             const { query, startDate, endDate, sortBy } = params;
-            return yield repositories_1.NewsArticleRepository.searchWithFilters(query, startDate, endDate, sortBy);
+            const articles = yield repositories_1.NewsArticleRepository.searchWithFilters(query, startDate, endDate, sortBy);
+            return this.filterVisible(articles);
         });
     }
     isArticleSaved(userId, articleId) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield repositories_1.SavedArticleRepository.findByUserAndArticle(userId, articleId);
             return !!result;
+        });
+    }
+    filterVisible(articles) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blocked = yield repositories_1.BlockedKeywordRepository.getAll();
+            const keywordList = blocked.map(b => b.keyword.toLowerCase());
+            return articles.filter(article => {
+                var _a;
+                return !article.is_hidden &&
+                    !((_a = article.categoryEntity) === null || _a === void 0 ? void 0 : _a.is_hidden) &&
+                    !keywordList.some(k => { var _a, _b; return (((_a = article.title) === null || _a === void 0 ? void 0 : _a.toLowerCase().includes(k)) || ((_b = article.description) === null || _b === void 0 ? void 0 : _b.toLowerCase().includes(k))); });
+            });
         });
     }
 }

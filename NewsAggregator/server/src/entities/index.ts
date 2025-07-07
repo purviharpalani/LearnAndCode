@@ -9,4 +9,6 @@ export { NotificationPreference } from './NotificationPreferences';
 export { EmailLog } from './EmailLog';
 export { ApiRequestLog } from './ApiRequestLog';
 export { ExternalServer } from './ExternalServer';
-export {NewsCategory} from './NewsCategory';
+export { NewsCategory } from './NewsCategory';
+export { BlockedKeyword } from './BlockedKeyword'
+export { ArticleReport } from './ArticleReport';

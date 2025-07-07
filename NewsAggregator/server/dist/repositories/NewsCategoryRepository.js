@@ -23,6 +23,12 @@ class NewsCategoryRepository {
             return yield this.repo.save(category);
         });
     }
+    static exists(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const found = yield this.repo.findOneBy({ name });
+            return !!found;
+        });
+    }
     static findByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.repo.findOne({ where: { name } });
@@ -31,6 +37,21 @@ class NewsCategoryRepository {
     static findAll() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.repo.find();
+        });
+    }
+    static update(id, updateFields) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update({ id }, updateFields);
+        });
+    }
+    static toggleVisibility(id, hide) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update(id, { is_hidden: hide });
+        });
+    }
+    static findHidden() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.repo.find({ where: { is_hidden: true } });
         });
     }
 }

@@ -16,9 +16,6 @@ class NotificationRepository {
     static get repo() {
         return db_1.AppDataSource.getRepository(Notification_1.Notification);
     }
-    /**
-     * Save a single notification
-     */
     static create(data) {
         return this.repo.create(data);
     }
@@ -28,18 +25,12 @@ class NotificationRepository {
             return yield this.repo.save(entry);
         });
     }
-    /**
-     * Save multiple notifications
-     */
     static saveAll(notifications) {
         return __awaiter(this, void 0, void 0, function* () {
             const entries = this.repo.create(notifications);
             return yield this.repo.save(entries);
         });
     }
-    /**
-     * Find all notifications by a user
-     */
     static findByUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.repo.find({
@@ -48,9 +39,6 @@ class NotificationRepository {
             });
         });
     }
-    /**
-     * Check if notification was already sent for a given article to user
-     */
     static findByUserAndArticle(userId, articleId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.repo.findOne({

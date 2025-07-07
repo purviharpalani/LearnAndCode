@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { ExternalServerRepository } from '../../../repositories/ExternalServerRepository';
 
 export class ExternalServerController {
-  // ✅ Get all external servers
   static async getAll(req: Request, res: Response): Promise<Response> {
     try {
       const servers = await ExternalServerRepository.getAll();
@@ -13,7 +12,6 @@ export class ExternalServerController {
     }
   }
 
-  // ✅ Get summarized status list
   static async getStatusSummary(req: Request, res: Response): Promise<Response> {
     try {
       const statuses = await ExternalServerRepository.getStatusSummary();
@@ -23,7 +21,6 @@ export class ExternalServerController {
     }
   }
 
-  // ✅ Only specific fields (ID, status, last_accessed)
   static async getAllStatuses(req: Request, res: Response): Promise<Response> {
     try {
       const servers = await ExternalServerRepository.getStatusList();
@@ -33,7 +30,6 @@ export class ExternalServerController {
     }
   }
 
-  // ✅ Get server by ID
   static async getById(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -51,7 +47,6 @@ export class ExternalServerController {
     }
   }
 
-  // ✅ Update API key by ID
   static async update(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id, 10);
     const { api_key } = req.body;
@@ -73,7 +68,6 @@ export class ExternalServerController {
     }
   }
 
-  // ✅ Delete server
   static async delete(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -86,7 +80,7 @@ export class ExternalServerController {
         return res.status(404).json({ error: 'Server not found' });
       }
 
-      await ExternalServerRepository.delete(id);
+      await ExternalServerRepository.deleteById(id);
       return res.json({ message: 'External server deleted successfully' });
     } catch (err: any) {
       return res.status(500).json({ error: 'Failed to delete server' });

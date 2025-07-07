@@ -71,6 +71,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => index_1.NotificationPreference, p => p.user),
     __metadata("design:type", Array)
 ], User.prototype, "notificationPreferences", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => index_1.ArticleReport, (report) => report.user),
+    __metadata("design:type", Array)
+], User.prototype, "reports", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)('user')
 ], User);

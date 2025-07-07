@@ -13,6 +13,7 @@ const viewSavedArticles_1 = require("../usecases/viewSavedArticles");
 const searchArticles_1 = require("../usecases/searchArticles");
 const NotificationMenu_1 = require("./NotificationMenu");
 const validator_1 = require("../utils/validator");
+const reportArticle_1 = require("../usecases/reportArticle");
 class UserMenu {
     async run() {
         const session = sessionManager_1.sessionManager.getSession();
@@ -30,7 +31,8 @@ class UserMenu {
             console.log('2. Saved Articles');
             console.log('3. Search');
             console.log('4. Notifications');
-            console.log('5. Logout');
+            console.log('5. Report Article');
+            console.log('6. Logout');
             const choice = readline_sync_1.default.question('Choose an option: ');
             switch (choice) {
                 case '1':
@@ -46,6 +48,9 @@ class UserMenu {
                     await new NotificationMenu_1.NotificationMenu().run();
                     break;
                 case '5':
+                    await (0, reportArticle_1.reportArticle)();
+                    break;
+                case '6':
                     sessionManager_1.sessionManager.clearSession();
                     console.log('Logged out successfully.');
                     return;

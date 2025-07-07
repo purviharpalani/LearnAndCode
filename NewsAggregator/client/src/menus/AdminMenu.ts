@@ -7,6 +7,10 @@ import { addNewsCategory } from '../usecases/addNewsCategory';
 import { sessionManager } from '../session/sessionManager';
 import { deleteExternalServer } from '../usecases/deleteExternalServer';
 import { AuthMenu } from './AuthMenu';
+import { viewReportedArticles } from '../usecases/viewReportedArticles';
+import { hideArticleManually } from '../usecases/hideArticleManually';
+import { hideOrUnhideCategory } from '../usecases/hideOrUnhideCategory';
+import { viewHiddenCategories } from '../usecases/viewHiddenCategories';
 
 export async function showAdminMenu(): Promise<void> {
   while (true) {
@@ -16,7 +20,11 @@ export async function showAdminMenu(): Promise<void> {
     console.log('3. Edit Server Details');
     console.log('4. Add News Category');
     console.log('5. Delete External Server');
-    console.log('6. Logout');
+    console.log('6. View Reported Articles');
+    console.log('7. Hide an Article');
+    console.log('8. Hide/Unhide News Category');
+    console.log('9. View Hidden Categories');
+    console.log('10. Logout');
 
     const choice = readlineSync.question('Choose an option: ');
 
@@ -37,6 +45,18 @@ export async function showAdminMenu(): Promise<void> {
             await deleteExternalServer();
             break;
         case '6':
+            await viewReportedArticles();
+            break;
+        case '7':
+            await hideArticleManually();
+            break;
+        case '8':
+            await hideOrUnhideCategory();
+            break;
+        case '9':
+            await viewHiddenCategories();
+            break;
+        case '10':
             sessionManager.clearSession();
             console.log('Logged out.');
             return;

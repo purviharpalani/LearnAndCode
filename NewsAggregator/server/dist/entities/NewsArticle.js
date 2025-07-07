@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsArticle = void 0;
 const typeorm_1 = require("typeorm");
-const NewsCategory_1 = require("./NewsCategory");
+const entities_1 = require("../entities");
 let NewsArticle = class NewsArticle {
 };
 exports.NewsArticle = NewsArticle;
@@ -56,14 +56,26 @@ __decorate([
     __metadata("design:type", Date)
 ], NewsArticle.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => NewsCategory_1.NewsCategory, category => category.articles),
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], NewsArticle.prototype, "is_hidden", void 0);
+__decorate([
+    (0, typeorm_1.Column)('int', { default: 0 }),
+    __metadata("design:type", Number)
+], NewsArticle.prototype, "report_count", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => entities_1.NewsCategory, category => category.articles),
     (0, typeorm_1.JoinColumn)({ name: 'category_id' }),
-    __metadata("design:type", NewsCategory_1.NewsCategory)
+    __metadata("design:type", entities_1.NewsCategory)
 ], NewsArticle.prototype, "categoryEntity", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'category_id' }),
     __metadata("design:type", Number)
 ], NewsArticle.prototype, "categoryId", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => entities_1.ArticleReport, (report) => report.article),
+    __metadata("design:type", Array)
+], NewsArticle.prototype, "reports", void 0);
 exports.NewsArticle = NewsArticle = __decorate([
     (0, typeorm_1.Entity)('news_articles')
 ], NewsArticle);

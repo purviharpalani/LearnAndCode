@@ -12,19 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsCategoryController = void 0;
 const NewsCategoryRepository_1 = require("../../../repositories/NewsCategoryRepository");
 class NewsCategoryController {
-    static addCategory(req, res) {
+    static create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name } = req.body;
-            if (!name) {
-                return res.status(400).json({ error: 'Category name is required' });
+            if (!name || typeof name !== 'string') {
+                return res.status(400).json({ error: 'Invalid category name' });
             }
-            try {
-                yield NewsCategoryRepository_1.NewsCategoryRepository.add(name);
-                res.status(201).json({ message: 'Category added' });
+            const exists = yield NewsCategoryRepository_1.NewsCategoryRepository.exists(name);
+            if (exists) {
+                return res.status(409).json({ error: 'Category already exists' });
             }
-            catch (err) {
-                res.status(500).json({ error: 'Failed to add category' });
-            }
+            const category = yield NewsCategoryRepository_1.NewsCategoryRepository.add(name);
+            res.status(201).json(category);
         });
     }
 }

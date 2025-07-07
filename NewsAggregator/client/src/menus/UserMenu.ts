@@ -7,6 +7,7 @@ import { viewSavedArticles } from '../usecases/viewSavedArticles';
 import { searchArticles } from '../usecases/searchArticles';
 import { NotificationMenu } from './NotificationMenu';
 import { Validator } from '../utils/validator';
+import { reportArticle } from '../usecases/reportArticle';
 
 export class UserMenu {
   async run(): Promise<void> {
@@ -28,7 +29,8 @@ export class UserMenu {
       console.log('2. Saved Articles');
       console.log('3. Search');
       console.log('4. Notifications');
-      console.log('5. Logout');
+      console.log('5. Report Article');
+      console.log('6. Logout');
 
       const choice = readlineSync.question('Choose an option: ');
 
@@ -50,6 +52,10 @@ export class UserMenu {
           break;
 
         case '5':
+          await reportArticle();
+          break;
+
+        case '6':
           sessionManager.clearSession();
           console.log('Logged out successfully.');
           return;

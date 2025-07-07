@@ -27,6 +27,11 @@ class NewsArticleRepository {
             return yield this.repo.find({ where: urls.map(url => ({ url })) });
         });
     }
+    static save(article) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.save(article);
+        });
+    }
     static saveAll(articles) {
         return __awaiter(this, void 0, void 0, function* () {
             const entries = this.repo.create(articles);
@@ -46,6 +51,20 @@ class NewsArticleRepository {
                 .getMany();
         });
     }
+    static incrementReportCount(articleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.increment({ id: articleId }, 'report_count', 1);
+            const article = yield this.repo.findOneBy({ id: articleId });
+            if (article && article.report_count >= 5) {
+                yield this.repo.update({ id: articleId }, { is_hidden: true });
+            }
+        });
+    }
+    static hide(articleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update(articleId, { is_hidden: true });
+        });
+    }
     static searchWithFilters(query_1, startDate_1, endDate_1) {
         return __awaiter(this, arguments, void 0, function* (query, startDate, endDate, sortBy = 'recent') {
             let qb = this.repo.createQueryBuilder('article')
@@ -58,7 +77,6 @@ class NewsArticleRepository {
                     end: endDate,
                 });
             }
-            // Normalize sortBy = 'date' => 'recent'
             const safeSort = sortBy === 'date' ? 'recent' : sortBy;
             if (safeSort === 'likes') {
                 qb = qb.orderBy('article.likes', 'DESC');

@@ -24,8 +24,11 @@ class ApiService {
         const res = await httpClient_1.httpClient.get('/articles/headlines/today');
         return res.data;
     }
-    static async getArticlesByDateRange(start, end) {
-        const res = await httpClient_1.httpClient.get(`/articles/date?start=${start}&end=${end}`);
+    static async getArticlesByDateRange(startDate, endDate) {
+        const res = await httpClient_1.httpClient.get('/articles/headlines', {
+            params: { startDate, endDate },
+            withCredentials: true,
+        });
         return res.data;
     }
     static async searchArticles(query, sortBy) {
@@ -41,8 +44,9 @@ class ApiService {
         const res = await httpClient_1.httpClient.get(`/articles/check-saved?articleId=${articleId}`);
         return res.data;
     }
-    static async addCategory(name) {
-        await httpClient_1.httpClient.post('/news-categories', { name });
+    static async addNewsCategory(name) {
+        const res = await httpClient_1.httpClient.post('/admin/news-categories', { name });
+        return res.data;
     }
     static async getExternalServerStatus() {
         const res = await httpClient_1.httpClient.get('/admin/external-servers/status');
@@ -57,10 +61,26 @@ class ApiService {
         return res.data;
     }
     static async deleteExternalServer(id) {
-        await httpClient_1.httpClient.delete(`/external-servers/${id}`);
+        await httpClient_1.httpClient.delete(`/admin/external-servers/${id}`);
     }
     static async getServerById(id) {
         const res = await httpClient_1.httpClient.get(`/admin/external-servers/${id}`);
+        return res.data;
+    }
+    static async reportArticle(articleId, reason) {
+        return httpClient_1.httpClient.post(`/articles/report`, { articleId, reason }, { withCredentials: true });
+    }
+    static async getReportedArticles() {
+        return httpClient_1.httpClient.get('/admin/reports').then(res => res.data);
+    }
+    static async hideArticle(articleId) {
+        return httpClient_1.httpClient.post(`/admin/articles/${articleId}/hide`);
+    }
+    static async toggleCategoryVisibility(id, hide) {
+        return httpClient_1.httpClient.post(`/admin/news-categories/${id}/toggle`, { hide });
+    }
+    static async getHiddenCategories() {
+        const res = await httpClient_1.httpClient.get('/admin/news-categories/hidden');
         return res.data;
     }
 }

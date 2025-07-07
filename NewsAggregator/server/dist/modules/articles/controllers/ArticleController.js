@@ -14,6 +14,8 @@ const Logger_1 = require("../../../infrastructure/logger/Logger");
 const CustomError_1 = require("../../../core/errors/CustomError");
 const validator_1 = require("../../../shared/utils/validator");
 const ArticleService_1 = require("../services/ArticleService");
+const repositories_1 = require("../../../repositories");
+const REPORT_THRESHOLD = 3;
 class ArticleController {
     static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -124,6 +126,41 @@ class ArticleController {
             catch (err) {
                 const status = err instanceof CustomError_1.CustomError ? err.statusCode : 500;
                 this.logger.error('[CHECK SAVED] ' + err.message);
+                res.status(status).json({ error: err instanceof Error ? err.message : String(err) });
+            }
+        });
+    }
+    static reportArticle(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = req.user;
+                const { articleId, reason } = req.body;
+                if (!reason || !articleId || isNaN(Number(articleId))) {
+                    throw new CustomError_1.CustomError('Invalid report input', 400);
+                }
+                const article = yield repositories_1.NewsArticleRepository.findById(Number(articleId));
+                if (!article) {
+                    throw new CustomError_1.CustomError('Article not found', 404);
+                }
+                // Save report
+                yield repositories_1.ArticleReportRepository.createReport({
+                    article,
+                    user,
+                    reason
+                });
+                // Count and update report_count
+                const reportCount = yield repositories_1.ArticleReportRepository.countReportsForArticle(article.id);
+                article.report_count = reportCount;
+                yield repositories_1.NewsArticleRepository.save(article);
+                // Auto-hide if threshold is met
+                if (reportCount >= REPORT_THRESHOLD && !article.is_hidden) {
+                    yield repositories_1.NewsArticleRepository.hide(article.id);
+                }
+                res.status(201).json({ message: 'Report submitted successfully' });
+            }
+            catch (err) {
+                const status = err instanceof CustomError_1.CustomError ? err.statusCode : 500;
+                this.logger.error('[REPORT ARTICLE] ' + err.message);
                 res.status(status).json({ error: err instanceof Error ? err.message : String(err) });
             }
         });

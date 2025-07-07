@@ -15,6 +15,10 @@ export class NewsArticleRepository {
     return await this.repo.find({ where: urls.map(url => ({ url })) });
   }
 
+  static async save(article: NewsArticle) {
+    return await this.repo.save(article);
+  }
+
   static async saveAll(articles: Partial<NewsArticle>[]): Promise<NewsArticle[]> {
     const entries = this.repo.create(articles);
     return await this.repo.save(entries);
@@ -29,9 +33,22 @@ export class NewsArticleRepository {
         .where('DATE(article.created_at) BETWEEN :start AND :end', { start, end })
         .orderBy('article.created_at', 'DESC')
         .getMany();
-    }
+  }
 
-    static async searchWithFilters(
+  static async incrementReportCount(articleId: number): Promise<void> {
+    await this.repo.increment({ id: articleId }, 'report_count', 1);
+
+    const article = await this.repo.findOneBy({ id: articleId });
+    if (article && article.report_count >= 5) {
+        await this.repo.update({ id: articleId }, { is_hidden: true });
+    }
+  }
+
+  static async hide(articleId: number): Promise<void> {
+    await this.repo.update(articleId, { is_hidden: true });
+  }
+
+  static async searchWithFilters(
         query: string,
         startDate?: string,
         endDate?: string,
@@ -49,7 +66,6 @@ export class NewsArticleRepository {
         });
         }
 
-        // Normalize sortBy = 'date' => 'recent'
         const safeSort: 'likes' | 'dislikes' | 'recent' =
         sortBy === 'date' ? 'recent' : sortBy;
 
@@ -63,6 +79,4 @@ export class NewsArticleRepository {
 
         return await qb.getMany();
     }
-
-
 }

@@ -5,6 +5,7 @@ import { HttpClient } from '../http/HttpClient';
 import { inferCategory } from '../../shared/utils/infercategory';
 import { AppDataSource } from '../../config/db';
 import { ExternalServerRepository } from '../../repositories';
+import { BlockedKeywordRepository } from '../../repositories/BlockedKeywordRepository';
 
 export class NewsApiOrgFetcher implements INewsFetcher {
   private readonly apiKey = process.env.NEWS_API_KEY || '62075ceceb4449638ea24a3acf33bcfa';
@@ -44,7 +45,7 @@ export class NewsApiOrgFetcher implements INewsFetcher {
 
         const articles = data.articles || [];
 
-        const mapped = articles.map((article: any) => {
+        let mapped = articles.map((article: any) => {
           const news = new NewsArticle();
           news.title = article.title;
           news.description = (article.description || '').slice(0, 1000);
@@ -54,6 +55,14 @@ export class NewsApiOrgFetcher implements INewsFetcher {
           news.categoryEntity = generalCategory; 
           news.created_at = new Date();
           return news;
+        });
+
+        const blocked = await BlockedKeywordRepository.getAll();
+        const blockedWords = blocked.map(b => b.keyword.toLowerCase());
+
+        mapped = mapped.filter((article: NewsArticle) => {
+          const text = `${article.title} ${article.description}`.toLowerCase();
+          return !blockedWords.some(word => text.includes(word));
         });
 
         allArticles.push(...mapped);

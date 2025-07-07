@@ -31,7 +31,7 @@ export class ExternalServerRepository {
     await this.repo.update({ id }, { api_key });
   }
 
-  static async delete(id: number): Promise<void> {
+  static async deleteById(id: number): Promise<void> {
     await this.repo.delete(id);
   }
 

@@ -9,3 +9,5 @@ export { NotificationPreferenceRepository } from './NotificationPreferenceReposi
 export { EmailLogRepository } from './EmailLogRepository';
 export { ApiRequestLogRepository } from './ApiRequestLogRepository';
 export { ExternalServerRepository } from './ExternalServerRepository';
+export { BlockedKeywordRepository} from './BlockedKeywordRepository';
+export { ArticleReportRepository } from './ArticleReportRepository';

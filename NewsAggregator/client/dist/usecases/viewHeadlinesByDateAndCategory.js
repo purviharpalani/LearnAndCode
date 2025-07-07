@@ -12,11 +12,12 @@ async function viewHeadlinesByDateAndCategory(startDate, endDate, category) {
         console.log('End date must be after or equal to start date.');
         return;
     }
+    console.log(`[CLIENT] Fetching headlines from ${startDate} to ${endDate} with category ${category}`);
     try {
         const articles = await ApiService_1.ApiService.getArticlesByDateRange(startDate, endDate);
         const filtered = category === 'all'
             ? articles
-            : articles.filter((a) => a.category === category);
+            : articles.filter((a) => a.category.toLowerCase() === category.toLowerCase());
         if (!filtered.length) {
             console.log('No articles found.');
             return;
@@ -29,6 +30,9 @@ async function viewHeadlinesByDateAndCategory(startDate, endDate, category) {
         });
     }
     catch (err) {
-        console.error('Error fetching headlines:', err.message);
+        console.error('[CLIENT ERROR] Failed to fetch headlines:');
+        console.error('Message:', err.message);
+        console.error('Stack:', err.stack);
+        console.error('Full error:', err);
     }
 }

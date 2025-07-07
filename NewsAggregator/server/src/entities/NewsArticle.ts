@@ -1,8 +1,8 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn
+  Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, OneToMany
 } from 'typeorm';
 
-import { NewsCategory } from './NewsCategory';
+import { NewsCategory, ArticleReport } from '../entities';
 
 @Entity('news_articles')
 export class NewsArticle {
@@ -36,6 +36,12 @@ export class NewsArticle {
   @CreateDateColumn()
   created_at: Date;
 
+  @Column({ default: false })
+  is_hidden: boolean;
+
+  @Column('int', { default: 0 })
+  report_count: number;
+
   @ManyToOne(() => NewsCategory, category => category.articles)
   @JoinColumn({ name: 'category_id' })
   categoryEntity: NewsCategory;
@@ -43,4 +49,6 @@ export class NewsArticle {
   @Column({ name: 'category_id' })
   categoryId: number;
 
+  @OneToMany(() => ArticleReport, (report) => report.article)
+  reports: ArticleReport[];
 }

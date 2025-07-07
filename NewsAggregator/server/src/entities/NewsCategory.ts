@@ -20,7 +20,9 @@ export class NewsCategory {
   @CreateDateColumn()
   created_at: Date;
 
-  // Relationships (optional but useful)
+  @Column({ default: false })
+  is_hidden: boolean;
+
   @OneToMany(() => NotificationPreference, (pref) => pref.category)
   preferences: NotificationPreference[];
 

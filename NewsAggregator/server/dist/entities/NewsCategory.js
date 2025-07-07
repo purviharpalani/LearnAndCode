@@ -29,9 +29,9 @@ __decorate([
     __metadata("design:type", Date)
 ], NewsCategory.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], NewsCategory.prototype, "updated_at", void 0);
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], NewsCategory.prototype, "is_hidden", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => NotificationPreferences_1.NotificationPreference, (pref) => pref.category),
     __metadata("design:type", Array)

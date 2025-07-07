@@ -12,6 +12,10 @@ const editExternalServer_1 = require("../usecases/editExternalServer");
 const addNewsCategory_1 = require("../usecases/addNewsCategory");
 const sessionManager_1 = require("../session/sessionManager");
 const deleteExternalServer_1 = require("../usecases/deleteExternalServer");
+const viewReportedArticles_1 = require("../usecases/viewReportedArticles");
+const hideArticleManually_1 = require("../usecases/hideArticleManually");
+const hideOrUnhideCategory_1 = require("../usecases/hideOrUnhideCategory");
+const viewHiddenCategories_1 = require("../usecases/viewHiddenCategories");
 async function showAdminMenu() {
     while (true) {
         console.log('\n=== ADMIN MENU ===');
@@ -20,7 +24,11 @@ async function showAdminMenu() {
         console.log('3. Edit Server Details');
         console.log('4. Add News Category');
         console.log('5. Delete External Server');
-        console.log('6. Logout');
+        console.log('6. View Reported Articles');
+        console.log('7. Hide an Article');
+        console.log('8. Hide/Unhide News Category');
+        console.log('9. View Hidden Categories');
+        console.log('10. Logout');
         const choice = readline_sync_1.default.question('Choose an option: ');
         switch (choice) {
             case '1':
@@ -39,6 +47,18 @@ async function showAdminMenu() {
                 await (0, deleteExternalServer_1.deleteExternalServer)();
                 break;
             case '6':
+                await (0, viewReportedArticles_1.viewReportedArticles)();
+                break;
+            case '7':
+                await (0, hideArticleManually_1.hideArticleManually)();
+                break;
+            case '8':
+                await (0, hideOrUnhideCategory_1.hideOrUnhideCategory)();
+                break;
+            case '9':
+                await (0, viewHiddenCategories_1.viewHiddenCategories)();
+                break;
+            case '10':
                 sessionManager_1.sessionManager.clearSession();
                 console.log('Logged out.');
                 return;

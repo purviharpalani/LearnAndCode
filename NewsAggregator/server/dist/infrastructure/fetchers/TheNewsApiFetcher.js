@@ -20,7 +20,7 @@ const db_1 = require("../../config/db");
 const repositories_1 = require("../../repositories");
 class TheNewsApiFetcher {
     constructor() {
-        this.apiKey = process.env.THE_NEWS_API_KEY || 'uqgQ9WYPGxAHDRh5tw8mtldTUOfA5ZLv3lY175YR';
+        this.apiKey = process.env.THE_NEWS_API_KEY || '';
         this.logger = Logger_1.Logger.getInstance();
         this.serverId = 2;
     }
@@ -47,18 +47,26 @@ class TheNewsApiFetcher {
                     },
                 });
                 const articles = response.data.data || [];
-                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, true);
-                return articles.map((article) => {
+                const blocked = yield repositories_1.BlockedKeywordRepository.getAll();
+                const blockedWords = blocked.map(b => b.keyword.toLowerCase());
+                let mapped = articles.map((article) => {
                     const news = new entities_1.NewsArticle();
                     news.title = article.title;
-                    news.description = (article.description || '').slice(0, 1000); // ✅ Truncate
+                    news.description = (article.description || '').slice(0, 1000);
                     news.source = article.source || '';
                     news.url = article.url || '';
                     news.category = this.inferCategory(article);
-                    news.categoryEntity = generalCategory; // ✅ Assign for FK
+                    news.categoryEntity = generalCategory;
                     news.created_at = new Date();
                     return news;
                 });
+                mapped = mapped.filter((article) => {
+                    const text = `${article.title} ${article.description}`.toLowerCase();
+                    return !blockedWords.some(word => text.includes(word));
+                });
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, true);
+                this.logger.info(`[TheNewsAPI] Fetched ${mapped.length} articles after filtering`);
+                return mapped;
             }
             catch (err) {
                 this.logger.error(`[TheNewsAPI] Error: ${err.message}`, { stack: err.stack });

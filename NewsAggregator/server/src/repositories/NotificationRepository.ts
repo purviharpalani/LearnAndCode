@@ -7,9 +7,6 @@ export class NotificationRepository {
     return AppDataSource.getRepository(Notification);
   }
 
-  /**
-   * Save a single notification
-   */
   static create(data: Partial<Notification>): Notification {
   return this.repo.create(data);
 }
@@ -19,17 +16,11 @@ export class NotificationRepository {
     return await this.repo.save(entry);
   }
 
-  /**
-   * Save multiple notifications
-   */
   static async saveAll(notifications: Partial<Notification>[]): Promise<Notification[]> {
     const entries = this.repo.create(notifications);
     return await this.repo.save(entries);
   }
 
-  /**
-   * Find all notifications by a user
-   */
   static async findByUser(userId: number): Promise<Notification[]> {
     return await this.repo.find({
       where: { user_id: userId },
@@ -37,9 +28,6 @@ export class NotificationRepository {
     });
   }
 
-  /**
-   * Check if notification was already sent for a given article to user
-   */
   static async findByUserAndArticle(
     userId: number,
     articleId: number

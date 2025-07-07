@@ -6,20 +6,21 @@ const newsCategory_controller_1 = require("../controllers/newsCategory.controlle
 const session_middleware_1 = require("../middlewares/session.middleware");
 const auth_middleware_1 = require("../middlewares/auth.middleware");
 const asyncHandler_1 = require("../shared/utils/asyncHandler");
+const BlockedKeywordController_1 = require("../modules/admin/controllers/BlockedKeywordController");
+const ModerationController_1 = require("../modules/admin/controllers/ModerationController");
 const router = (0, express_1.Router)();
-// 🔐 Apply auth + admin guard to all routes below
 router.use(session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin);
-// ----------------------
-// 📡 External Servers
-// ----------------------
 router.get('/external-servers', (0, asyncHandler_1.asyncHandler)(ExternalServerController_1.ExternalServerController.getAll));
 router.get('/external-servers/status', (0, asyncHandler_1.asyncHandler)(ExternalServerController_1.ExternalServerController.getStatusList));
 router.get('/external-servers/:id', (0, asyncHandler_1.asyncHandler)(ExternalServerController_1.ExternalServerController.getById));
 router.put('/external-servers/:id', (0, asyncHandler_1.asyncHandler)(ExternalServerController_1.ExternalServerController.update));
 router.delete('/external-servers/:id', (0, asyncHandler_1.asyncHandler)(ExternalServerController_1.ExternalServerController.delete));
-// router.get("/status", ExternalServerController.getStatus);
-// ----------------------
-// 🗂️ News Categories
-// ----------------------
 router.post('/news-categories', (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.create));
+router.get('/blocked-keywords', (0, asyncHandler_1.asyncHandler)(BlockedKeywordController_1.BlockedKeywordController.getAll));
+router.post('/blocked-keywords', (0, asyncHandler_1.asyncHandler)(BlockedKeywordController_1.BlockedKeywordController.add));
+router.delete('/blocked-keywords/:id', (0, asyncHandler_1.asyncHandler)(BlockedKeywordController_1.BlockedKeywordController.remove));
+router.get('/reports', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(ModerationController_1.ModerationController.getReports));
+router.post('/articles/:id/hide', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(ModerationController_1.ModerationController.hideArticle));
+router.post('/news-categories/:id/toggle', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.toggleVisibility));
+router.get('/news-categories/hidden', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.getHiddenCategories));
 exports.default = router;

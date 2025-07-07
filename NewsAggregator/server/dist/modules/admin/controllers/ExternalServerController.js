@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExternalServerController = void 0;
 const ExternalServerRepository_1 = require("../../../repositories/ExternalServerRepository");
 class ExternalServerController {
-    // ✅ Get all external servers
     static getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -24,7 +23,6 @@ class ExternalServerController {
             }
         });
     }
-    // ✅ Get summarized status list
     static getStatusSummary(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -36,7 +34,6 @@ class ExternalServerController {
             }
         });
     }
-    // ✅ Only specific fields (ID, status, last_accessed)
     static getAllStatuses(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -48,7 +45,6 @@ class ExternalServerController {
             }
         });
     }
-    // ✅ Get server by ID
     static getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = parseInt(req.params.id, 10);
@@ -67,7 +63,6 @@ class ExternalServerController {
             }
         });
     }
-    // ✅ Update API key by ID
     static update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = parseInt(req.params.id, 10);
@@ -88,7 +83,6 @@ class ExternalServerController {
             }
         });
     }
-    // ✅ Delete server
     static delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = parseInt(req.params.id, 10);
@@ -100,7 +94,7 @@ class ExternalServerController {
                 if (!existing) {
                     return res.status(404).json({ error: 'Server not found' });
                 }
-                yield ExternalServerRepository_1.ExternalServerRepository.delete(id);
+                yield ExternalServerRepository_1.ExternalServerRepository.deleteById(id);
                 return res.json({ message: 'External server deleted successfully' });
             }
             catch (err) {

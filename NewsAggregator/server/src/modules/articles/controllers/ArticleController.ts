@@ -4,6 +4,7 @@ import { CustomError } from '../../../core/errors/CustomError';
 import { isValidDate } from '../../../shared/utils/validator';
 import { IArticleService } from '../../../core/interfaces/IArticleService';
 import { ArticleService } from '../services/ArticleService';
+import { NewsArticleRepository, ArticleReportRepository } from '../../../repositories';
 
 declare global {
   namespace Express {
@@ -12,6 +13,8 @@ declare global {
     }
   }
 }
+
+const REPORT_THRESHOLD = 3;
 
 export class ArticleController {
   private static service: IArticleService = new ArticleService();
@@ -125,4 +128,45 @@ export class ArticleController {
       res.status(status).json({ error: err instanceof Error ? err.message : String(err) });
     }
   }
+
+  static async reportArticle(req: Request, res: Response) {
+    try {
+      const user = req.user!;
+      const { articleId, reason } = req.body;
+
+      if (!reason || !articleId || isNaN(Number(articleId))) {
+        throw new CustomError('Invalid report input', 400);
+      }
+
+      const article = await NewsArticleRepository.findById(Number(articleId));
+      if (!article) {
+        throw new CustomError('Article not found', 404);
+      }
+
+      // Save report
+      await ArticleReportRepository.createReport({
+        article,
+        user,
+        reason
+      });
+
+      // Count and update report_count
+      const reportCount = await ArticleReportRepository.countReportsForArticle(article.id);
+      article.report_count = reportCount;
+      await NewsArticleRepository.save(article);
+
+      // Auto-hide if threshold is met
+      if (reportCount >= REPORT_THRESHOLD && !article.is_hidden) {
+        await NewsArticleRepository.hide(article.id);
+      }
+
+      res.status(201).json({ message: 'Report submitted successfully' });
+
+    } catch (err) {
+      const status = err instanceof CustomError ? err.statusCode : 500;
+      this.logger.error('[REPORT ARTICLE] ' + (err as Error).message);
+      res.status(status).json({ error: err instanceof Error ? err.message : String(err) });
+    }
+  }
+
 }

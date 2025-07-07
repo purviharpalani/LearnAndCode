@@ -33,8 +33,11 @@ export class ApiService {
     return res.data;
   }
 
-  static async getArticlesByDateRange(start: string, end: string): Promise<NewsArticle[]> {
-    const res = await httpClient.get(`/articles/date?start=${start}&end=${end}`);
+  static async getArticlesByDateRange(startDate: string, endDate: string): Promise<NewsArticle[]> {
+    const res = await httpClient.get('/articles/headlines', {
+      params: { startDate, endDate },
+      withCredentials: true,
+    });
     return res.data;
   }
 
@@ -55,33 +58,52 @@ export class ApiService {
   }
 
   static async addNewsCategory(name: string): Promise<any[]> {
-  const res = await httpClient.post('/admin/news-categories', { name });
-  return res.data;
-}
+    const res = await httpClient.post('/admin/news-categories', { name });
+    return res.data;
+  }
 
-static async getExternalServerStatus(): Promise<any[]> {
-  const res = await httpClient.get('/admin/external-servers/status');
-  return res.data;
-}
+  static async getExternalServerStatus(): Promise<any[]> {
+    const res = await httpClient.get('/admin/external-servers/status');
+    return res.data;
+  }
 
-static async getAllExternalServers(): Promise<any[]> {
-  const res = await httpClient.get('/external-servers');
-  return res.data;
-}
+  static async getAllExternalServers(): Promise<any[]> {
+    const res = await httpClient.get('/external-servers');
+    return res.data;
+  }
 
-static async updateExternalServer(id: number, update: { api_key: string }) {
-  const res = await httpClient.put(`/admin/external-servers/${id}`, update);
-  return res.data;
-}
+  static async updateExternalServer(id: number, update: { api_key: string }) {
+    const res = await httpClient.put(`/admin/external-servers/${id}`, update);
+    return res.data;
+  }
 
-static async deleteExternalServer(id: number): Promise<void> {
-  await httpClient.delete(`/external-servers/${id}`);
-}
+  static async deleteExternalServer(id: number): Promise<void> {
+    await httpClient.delete(`/admin/external-servers/${id}`);
+  }
 
-static async getServerById(id: number) {
+  static async getServerById(id: number) {
     const res = await httpClient.get(`/admin/external-servers/${id}`);
     return res.data;
   }
 
+  static async reportArticle(articleId: number, reason: string) {
+    return httpClient.post(`/articles/report`, { articleId, reason }, { withCredentials: true });
+  }
 
+  static async getReportedArticles() {
+    return httpClient.get('/admin/reports').then(res => res.data);
+  }
+
+  static async hideArticle(articleId: number) {
+    return httpClient.post(`/admin/articles/${articleId}/hide`);
+  }
+
+  static async toggleCategoryVisibility(id: number, hide: boolean) {
+    return httpClient.post(`/admin/news-categories/${id}/toggle`, { hide });
+  }
+
+  static async getHiddenCategories() {
+    const res = await httpClient.get('/admin/news-categories/hidden');
+    return res.data;
+  }
 }

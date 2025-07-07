@@ -8,7 +8,7 @@ export class NewsCategoryRepository {
     return AppDataSource.getRepository(NewsCategory);
   }
 
-static async add(name: string): Promise<NewsCategory> {
+  static async add(name: string): Promise<NewsCategory> {
     const category = this.repo.create({ name });
     return await this.repo.save(category);
   }
@@ -25,4 +25,17 @@ static async add(name: string): Promise<NewsCategory> {
   static async findAll(): Promise<NewsCategory[]> {
     return await this.repo.find();
   }
+
+  static async update(id: number, updateFields: Partial<NewsCategory>): Promise<void> {
+    await this.repo.update({ id }, updateFields);
+  }
+
+  static async toggleVisibility(id: number, hide: boolean): Promise<void> {
+    await this.repo.update(id, { is_hidden: hide });
+  }
+
+  static async findHidden(): Promise<NewsCategory[]> {
+    return this.repo.find({ where: { is_hidden: true } });
+  }
+
 }
