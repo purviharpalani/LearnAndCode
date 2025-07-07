@@ -9,27 +9,27 @@ export class NewsCategoryController {
     return res.status(201).json(category);
   }
 
-  static async toggleVisibility(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const { hide } = req.body;
+  // static async toggleVisibility(req: Request, res: Response) {
+  //   const id = Number(req.params.id);
+  //   const { hide } = req.body;
 
-    if (isNaN(id)) return res.status(400).json({ error: 'Invalid category ID' });
+  //   if (isNaN(id)) return res.status(400).json({ error: 'Invalid category ID' });
 
-    try {
-      await NewsCategoryRepository.toggleVisibility(id, hide);
-      res.json({ message: `Category ${hide ? 'hidden' : 'unhidden'} successfully.` });
-    } catch (err: any) {
-      res.status(500).json({ error: 'Failed to toggle category visibility' });
-    }
-  }
+  //   try {
+  //     await NewsCategoryRepository.toggleVisibility(id, hide);
+  //     res.json({ message: `Category ${hide ? 'hidden' : 'unhidden'} successfully.` });
+  //   } catch (err: any) {
+  //     res.status(500).json({ error: 'Failed to toggle category visibility' });
+  //   }
+  // }
 
-  static async getHiddenCategories(req: Request, res: Response) {
-    try {
-      const hidden = await NewsCategoryRepository.findHidden();
-      res.json(hidden);
-    } catch (err: any) {
-      res.status(500).json({ error: 'Failed to fetch hidden categories' });
-    }
-  }
+  // static async getHiddenCategories(req: Request, res: Response) {
+  //   try {
+  //     const hidden = await NewsCategoryRepository.getHidden();
+  //     res.json(hidden);
+  //   } catch (err: any) {
+  //     res.status(500).json({ error: 'Failed to fetch hidden categories' });
+  //   }
+  // }
 
 }

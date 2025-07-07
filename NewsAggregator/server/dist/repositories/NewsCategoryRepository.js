@@ -49,9 +49,14 @@ class NewsCategoryRepository {
             yield this.repo.update(id, { is_hidden: hide });
         });
     }
-    static findHidden() {
+    static getHidden() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repo.find({ where: { is_hidden: true } });
+            return yield this.repo.find({ where: { is_hidden: true } });
+        });
+    }
+    static getVisibleCategories() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.find({ where: { is_hidden: false } });
         });
     }
 }

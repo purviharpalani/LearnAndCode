@@ -26,12 +26,14 @@ router.delete('/blocked-keywords/:id', asyncHandler(BlockedKeywordController.rem
 router.get('/reports', requireSession, authorizeAdmin, asyncHandler(ModerationController.getReports));
 router.post('/articles/:id/hide', requireSession, authorizeAdmin, asyncHandler(ModerationController.hideArticle));
 
-router.post('/news-categories/:id/toggle', requireSession, authorizeAdmin, asyncHandler(NewsCategoryController.toggleVisibility));
-router.get('/news-categories/hidden', requireSession, authorizeAdmin, asyncHandler(NewsCategoryController.getHiddenCategories));
+// router.post('/news-categories/:id/toggle', requireSession, authorizeAdmin, asyncHandler(ModerationController.toggleVisibility));
+// router.get('/news-categories/hidden', requireSession, authorizeAdmin, asyncHandler(ModerationController.getHiddenCategories));
 
 router.get('/reports', requireSession, authorizeAdmin, ModerationController.getReportedArticles);
 router.post('/articles/:id/hide', requireSession, authorizeAdmin, asyncHandler(ModerationController.hideArticle));
 
+router.post('/news-categories/:id/toggle', requireSession, authorizeAdmin, ModerationController.toggleCategoryVisibility);
+router.get('/news-categories/hidden', requireSession, authorizeAdmin, ModerationController.getHiddenCategories);
 
 
 export default router;

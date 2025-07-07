@@ -25,10 +25,6 @@ __decorate([
     __metadata("design:type", String)
 ], NewsCategory.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], NewsCategory.prototype, "created_at", void 0);
-__decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], NewsCategory.prototype, "is_hidden", void 0);

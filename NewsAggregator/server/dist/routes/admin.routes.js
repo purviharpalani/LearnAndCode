@@ -21,8 +21,10 @@ router.post('/blocked-keywords', (0, asyncHandler_1.asyncHandler)(BlockedKeyword
 router.delete('/blocked-keywords/:id', (0, asyncHandler_1.asyncHandler)(BlockedKeywordController_1.BlockedKeywordController.remove));
 router.get('/reports', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(ModerationController_1.ModerationController.getReports));
 router.post('/articles/:id/hide', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(ModerationController_1.ModerationController.hideArticle));
-router.post('/news-categories/:id/toggle', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.toggleVisibility));
-router.get('/news-categories/hidden', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(newsCategory_controller_1.NewsCategoryController.getHiddenCategories));
+// router.post('/news-categories/:id/toggle', requireSession, authorizeAdmin, asyncHandler(ModerationController.toggleVisibility));
+// router.get('/news-categories/hidden', requireSession, authorizeAdmin, asyncHandler(ModerationController.getHiddenCategories));
 router.get('/reports', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, ModerationController_1.ModerationController.getReportedArticles);
 router.post('/articles/:id/hide', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, (0, asyncHandler_1.asyncHandler)(ModerationController_1.ModerationController.hideArticle));
+router.post('/news-categories/:id/toggle', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, ModerationController_1.ModerationController.toggleCategoryVisibility);
+router.get('/news-categories/hidden', session_middleware_1.requireSession, auth_middleware_1.authorizeAdmin, ModerationController_1.ModerationController.getHiddenCategories);
 exports.default = router;

@@ -49,9 +49,25 @@ class ModerationController {
             }
             catch (err) {
                 const status = err instanceof CustomError_1.CustomError ? err.statusCode : 500;
-                //   this.logger.error('[HIDE ARTICLE] ' + (err as Error).message);
                 res.status(status).json({ error: err instanceof Error ? err.message : String(err) });
             }
+        });
+    }
+    static toggleCategoryVisibility(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { hide } = req.body;
+            const id = parseInt(req.params.id, 10);
+            if (isNaN(id) || typeof hide !== 'boolean') {
+                throw new CustomError_1.CustomError('Invalid input', 400);
+            }
+            yield repositories_1.NewsCategoryRepository.toggleVisibility(id, hide);
+            res.status(200).json({ message: `Category ${hide ? 'hidden' : 'unhidden'} successfully` });
+        });
+    }
+    static getHiddenCategories(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hidden = yield repositories_1.NewsCategoryRepository.getHidden();
+            res.json(hidden);
         });
     }
 }

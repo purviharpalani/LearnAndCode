@@ -14,8 +14,9 @@ const sessionManager_1 = require("../session/sessionManager");
 const deleteExternalServer_1 = require("../usecases/deleteExternalServer");
 const viewReportedArticles_1 = require("../usecases/viewReportedArticles");
 const hideArticle_1 = require("../usecases/hideArticle");
-const hideOrUnhideCategory_1 = require("../usecases/hideOrUnhideCategory");
+// import { hideOrUnhideCategory } from '../usecases/hideOrUnhideCategory';
 const viewHiddenCategories_1 = require("../usecases/viewHiddenCategories");
+const toggleCategoryVisibility_1 = require("../usecases/toggleCategoryVisibility");
 async function showAdminMenu() {
     while (true) {
         console.log('\n=== ADMIN MENU ===');
@@ -53,7 +54,7 @@ async function showAdminMenu() {
                 await (0, hideArticle_1.hideArticle)();
                 break;
             case '8':
-                await (0, hideOrUnhideCategory_1.hideOrUnhideCategory)();
+                await (0, toggleCategoryVisibility_1.toggleCategoryVisibility)();
                 break;
             case '9':
                 await (0, viewHiddenCategories_1.viewHiddenCategories)();

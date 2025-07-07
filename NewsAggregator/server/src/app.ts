@@ -5,7 +5,7 @@ import { createServer } from 'http';
 import { connectToDatabase } from './config/db';
 import { NewsFetcherScheduler } from './jobs/schedulers/NewsFetcherScheduler';
 
-NewsFetcherScheduler.start();
+dotenv.config();
 
 // import { startNewsFetcherJob } from './jobs/schedulers/NewsFetcherScheduler';
 import { Logger } from './infrastructure/logger/Logger';
@@ -16,7 +16,7 @@ import authRoutes from './routes/auth.routes';
 import articleRoutes from './routes/article.routes';
 import adminRoutes from './routes/admin.routes';
 
-dotenv.config();
+
 
 const logger = Logger.getInstance();
 const app = express();

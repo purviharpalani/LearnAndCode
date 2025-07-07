@@ -9,8 +9,9 @@ import { deleteExternalServer } from '../usecases/deleteExternalServer';
 import { AuthMenu } from './AuthMenu';
 import { viewReportedArticles } from '../usecases/viewReportedArticles';
 import { hideArticle } from '../usecases/hideArticle';
-import { hideOrUnhideCategory } from '../usecases/hideOrUnhideCategory';
+// import { hideOrUnhideCategory } from '../usecases/hideOrUnhideCategory';
 import { viewHiddenCategories } from '../usecases/viewHiddenCategories';
+import { toggleCategoryVisibility } from '../usecases/toggleCategoryVisibility';
 
 export async function showAdminMenu(): Promise<void> {
   while (true) {
@@ -51,7 +52,7 @@ export async function showAdminMenu(): Promise<void> {
             await hideArticle();
             break;
         case '8':
-            await hideOrUnhideCategory();
+            await toggleCategoryVisibility();
             break;
         case '9':
             await viewHiddenCategories();

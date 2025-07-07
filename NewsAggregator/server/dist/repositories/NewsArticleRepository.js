@@ -46,8 +46,10 @@ class NewsArticleRepository {
     static getByDateRange(start, end) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.repo.createQueryBuilder('article')
+                .leftJoinAndSelect('article.category', 'category')
                 .where('DATE(article.created_at) BETWEEN :start AND :end', { start, end })
                 .orderBy('article.created_at', 'DESC')
+                .andWhere('category.is_hidden = false')
                 .getMany();
         });
     }

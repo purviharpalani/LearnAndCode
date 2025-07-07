@@ -30,8 +30,10 @@ export class NewsArticleRepository {
 
   static async getByDateRange(start: string, end: string): Promise<NewsArticle[]> {
     return await this.repo.createQueryBuilder('article')
+    .leftJoinAndSelect('article.category', 'category')
       .where('DATE(article.created_at) BETWEEN :start AND :end', { start, end })
       .orderBy('article.created_at', 'DESC')
+      .andWhere('category.is_hidden = false')
       .getMany();
   }
 

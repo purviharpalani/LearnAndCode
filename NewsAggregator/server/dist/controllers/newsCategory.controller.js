@@ -19,31 +19,5 @@ class NewsCategoryController {
             return res.status(201).json(category);
         });
     }
-    static toggleVisibility(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const id = Number(req.params.id);
-            const { hide } = req.body;
-            if (isNaN(id))
-                return res.status(400).json({ error: 'Invalid category ID' });
-            try {
-                yield NewsCategoryRepository_1.NewsCategoryRepository.toggleVisibility(id, hide);
-                res.json({ message: `Category ${hide ? 'hidden' : 'unhidden'} successfully.` });
-            }
-            catch (err) {
-                res.status(500).json({ error: 'Failed to toggle category visibility' });
-            }
-        });
-    }
-    static getHiddenCategories(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const hidden = yield NewsCategoryRepository_1.NewsCategoryRepository.findHidden();
-                res.json(hidden);
-            }
-            catch (err) {
-                res.status(500).json({ error: 'Failed to fetch hidden categories' });
-            }
-        });
-    }
 }
 exports.NewsCategoryController = NewsCategoryController;

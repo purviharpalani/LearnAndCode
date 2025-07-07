@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleReportRepository = exports.BlockedKeywordRepository = exports.ExternalServerRepository = exports.ApiRequestLogRepository = exports.EmailLogRepository = exports.NotificationPreferenceRepository = exports.SearchHistoryRepository = exports.ArticleReactionRepository = exports.NewsArticleRepository = exports.NotificationRepository = exports.SavedArticleRepository = exports.UserSessionRepository = exports.UserRepository = void 0;
+exports.NewsCategoryRepository = exports.ArticleReportRepository = exports.BlockedKeywordRepository = exports.ExternalServerRepository = exports.ApiRequestLogRepository = exports.EmailLogRepository = exports.NotificationPreferenceRepository = exports.SearchHistoryRepository = exports.ArticleReactionRepository = exports.NewsArticleRepository = exports.NotificationRepository = exports.SavedArticleRepository = exports.UserSessionRepository = exports.UserRepository = void 0;
 var UserRepository_1 = require("./UserRepository");
 Object.defineProperty(exports, "UserRepository", { enumerable: true, get: function () { return UserRepository_1.UserRepository; } });
 var UserSessionRepository_1 = require("./UserSessionRepository");
@@ -27,3 +27,5 @@ var BlockedKeywordRepository_1 = require("./BlockedKeywordRepository");
 Object.defineProperty(exports, "BlockedKeywordRepository", { enumerable: true, get: function () { return BlockedKeywordRepository_1.BlockedKeywordRepository; } });
 var ArticleReportRepository_1 = require("./ArticleReportRepository");
 Object.defineProperty(exports, "ArticleReportRepository", { enumerable: true, get: function () { return ArticleReportRepository_1.ArticleReportRepository; } });
+var NewsCategoryRepository_1 = require("./NewsCategoryRepository");
+Object.defineProperty(exports, "NewsCategoryRepository", { enumerable: true, get: function () { return NewsCategoryRepository_1.NewsCategoryRepository; } });

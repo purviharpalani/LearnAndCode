@@ -34,8 +34,12 @@ export class NewsCategoryRepository {
     await this.repo.update(id, { is_hidden: hide });
   }
 
-  static async findHidden(): Promise<NewsCategory[]> {
-    return this.repo.find({ where: { is_hidden: true } });
+  static async getHidden(): Promise<NewsCategory[]> {
+    return await this.repo.find({ where: { is_hidden: true } });
+  }
+
+  static async getVisibleCategories(): Promise<NewsCategory[]> {
+    return await this.repo.find({ where: { is_hidden: false } });
   }
 
 }
