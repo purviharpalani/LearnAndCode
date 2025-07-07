@@ -65,6 +65,11 @@ class NewsArticleRepository {
             yield this.repo.update(articleId, { is_hidden: true });
         });
     }
+    static unhide(articleId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update(articleId, { is_hidden: false });
+        });
+    }
     static searchWithFilters(query_1, startDate_1, endDate_1) {
         return __awaiter(this, arguments, void 0, function* (query, startDate, endDate, sortBy = 'recent') {
             let qb = this.repo.createQueryBuilder('article')

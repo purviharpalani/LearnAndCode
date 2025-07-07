@@ -8,7 +8,7 @@ import { sessionManager } from '../session/sessionManager';
 import { deleteExternalServer } from '../usecases/deleteExternalServer';
 import { AuthMenu } from './AuthMenu';
 import { viewReportedArticles } from '../usecases/viewReportedArticles';
-import { hideArticleManually } from '../usecases/hideArticleManually';
+import { hideArticle } from '../usecases/hideArticle';
 import { hideOrUnhideCategory } from '../usecases/hideOrUnhideCategory';
 import { viewHiddenCategories } from '../usecases/viewHiddenCategories';
 
@@ -48,7 +48,7 @@ export async function showAdminMenu(): Promise<void> {
             await viewReportedArticles();
             break;
         case '7':
-            await hideArticleManually();
+            await hideArticle();
             break;
         case '8':
             await hideOrUnhideCategory();

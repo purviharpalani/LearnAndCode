@@ -30,9 +30,9 @@ export class NewsArticleRepository {
 
   static async getByDateRange(start: string, end: string): Promise<NewsArticle[]> {
     return await this.repo.createQueryBuilder('article')
-        .where('DATE(article.created_at) BETWEEN :start AND :end', { start, end })
-        .orderBy('article.created_at', 'DESC')
-        .getMany();
+      .where('DATE(article.created_at) BETWEEN :start AND :end', { start, end })
+      .orderBy('article.created_at', 'DESC')
+      .getMany();
   }
 
   static async incrementReportCount(articleId: number): Promise<void> {
@@ -40,7 +40,7 @@ export class NewsArticleRepository {
 
     const article = await this.repo.findOneBy({ id: articleId });
     if (article && article.report_count >= 5) {
-        await this.repo.update({ id: articleId }, { is_hidden: true });
+      await this.repo.update({ id: articleId }, { is_hidden: true });
     }
   }
 
@@ -48,35 +48,40 @@ export class NewsArticleRepository {
     await this.repo.update(articleId, { is_hidden: true });
   }
 
+  static async unhide(articleId: number): Promise<void> {
+    await this.repo.update(articleId, { is_hidden: false });
+  }
+
+
   static async searchWithFilters(
-        query: string,
-        startDate?: string,
-        endDate?: string,
-        sortBy: 'likes' | 'dislikes' | 'recent' | 'date' = 'recent'
-    ): Promise<NewsArticle[]> {
-        let qb = this.repo.createQueryBuilder('article')
-        .where('LOWER(article.title) LIKE :query OR LOWER(article.description) LIKE :query', {
-            query: `%${query.toLowerCase()}%`,
-        });
+    query: string,
+    startDate?: string,
+    endDate?: string,
+    sortBy: 'likes' | 'dislikes' | 'recent' | 'date' = 'recent'
+  ): Promise<NewsArticle[]> {
+    let qb = this.repo.createQueryBuilder('article')
+      .where('LOWER(article.title) LIKE :query OR LOWER(article.description) LIKE :query', {
+        query: `%${query.toLowerCase()}%`,
+      });
 
-        if (startDate && endDate) {
-        qb = qb.andWhere('DATE(article.created_at) BETWEEN :start AND :end', {
-            start: startDate,
-            end: endDate,
-        });
-        }
-
-        const safeSort: 'likes' | 'dislikes' | 'recent' =
-        sortBy === 'date' ? 'recent' : sortBy;
-
-        if (safeSort === 'likes') {
-        qb = qb.orderBy('article.likes', 'DESC');
-        } else if (safeSort === 'dislikes') {
-        qb = qb.orderBy('article.dislikes', 'DESC');
-        } else {
-        qb = qb.orderBy('article.created_at', 'DESC');
-        }
-
-        return await qb.getMany();
+    if (startDate && endDate) {
+      qb = qb.andWhere('DATE(article.created_at) BETWEEN :start AND :end', {
+        start: startDate,
+        end: endDate,
+      });
     }
+
+    const safeSort: 'likes' | 'dislikes' | 'recent' =
+      sortBy === 'date' ? 'recent' : sortBy;
+
+    if (safeSort === 'likes') {
+      qb = qb.orderBy('article.likes', 'DESC');
+    } else if (safeSort === 'dislikes') {
+      qb = qb.orderBy('article.dislikes', 'DESC');
+    } else {
+      qb = qb.orderBy('article.created_at', 'DESC');
+    }
+
+    return await qb.getMany();
+  }
 }

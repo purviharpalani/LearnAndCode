@@ -13,7 +13,7 @@ const addNewsCategory_1 = require("../usecases/addNewsCategory");
 const sessionManager_1 = require("../session/sessionManager");
 const deleteExternalServer_1 = require("../usecases/deleteExternalServer");
 const viewReportedArticles_1 = require("../usecases/viewReportedArticles");
-const hideArticleManually_1 = require("../usecases/hideArticleManually");
+const hideArticle_1 = require("../usecases/hideArticle");
 const hideOrUnhideCategory_1 = require("../usecases/hideOrUnhideCategory");
 const viewHiddenCategories_1 = require("../usecases/viewHiddenCategories");
 async function showAdminMenu() {
@@ -50,7 +50,7 @@ async function showAdminMenu() {
                 await (0, viewReportedArticles_1.viewReportedArticles)();
                 break;
             case '7':
-                await (0, hideArticleManually_1.hideArticleManually)();
+                await (0, hideArticle_1.hideArticle)();
                 break;
             case '8':
                 await (0, hideOrUnhideCategory_1.hideOrUnhideCategory)();

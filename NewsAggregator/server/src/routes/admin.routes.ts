@@ -30,6 +30,7 @@ router.post('/news-categories/:id/toggle', requireSession, authorizeAdmin, async
 router.get('/news-categories/hidden', requireSession, authorizeAdmin, asyncHandler(NewsCategoryController.getHiddenCategories));
 
 router.get('/reports', requireSession, authorizeAdmin, ModerationController.getReportedArticles);
+router.post('/articles/:id/hide', requireSession, authorizeAdmin, asyncHandler(ModerationController.hideArticle));
 
 
 

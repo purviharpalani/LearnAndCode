@@ -17,9 +17,6 @@ export class NewsCategory {
   @Column({ unique: true })
   name: string;
 
-  @CreateDateColumn()
-  created_at: Date;
-
   @Column({ default: false })
   is_hidden: boolean;
 
