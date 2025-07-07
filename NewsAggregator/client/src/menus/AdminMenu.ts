@@ -2,7 +2,7 @@
 import readlineSync from 'readline-sync';
 import { viewExternalServers } from '../usecases/viewExternalServers';
 import { viewServerDetails } from '../usecases/viewServerDetails';
-import { editExternalServer } from '../usecases/editExternalServer';
+import { updateServerDetails } from '../usecases/editExternalServer';
 import { addNewsCategory } from '../usecases/addNewsCategory';
 import { sessionManager } from '../session/sessionManager';
 import { deleteExternalServer } from '../usecases/deleteExternalServer';
@@ -28,7 +28,7 @@ export async function showAdminMenu(): Promise<void> {
             await viewServerDetails();
             break;
         case '3':
-            await editExternalServer();
+            await updateServerDetails();
             break;
         case '4':
             await addNewsCategory();
