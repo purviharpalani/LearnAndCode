@@ -92,4 +92,25 @@ export class ExternalServerController {
       return res.status(500).json({ error: 'Failed to delete server' });
     }
   }
+
+  static async create(req: Request, res: Response) {
+  try {
+    const newServer = await ExternalServerRepository.createExternalServer(req.body);
+    res.status(201).json(newServer);
+  } catch (error) {
+    console.error("Error creating external server:", error);
+    res.status(500).json({ error: "Failed to create external server" });
+  }
+}
+
+static async getStatusList(req: Request, res: Response) {
+    try {
+      const servers = await ExternalServerRepository.getStatusList();
+      res.json(servers);
+    } catch (err: any) {
+      console.error('[Admin:getStatusList]', err);
+      res.status(500).json({ error: 'Failed to fetch external server status' });
+    }
+}
+
 }

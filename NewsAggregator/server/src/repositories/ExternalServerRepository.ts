@@ -8,6 +8,11 @@ export class ExternalServerRepository {
     return await this.repo.find();
   }
 
+  static async createExternalServer(data: Partial<ExternalServer>) {
+  return await this.repo.create(data);
+}
+
+
   static async getStatusSummary(): Promise<Partial<ExternalServer>[]> {
     return await this.repo.find({
       select: ['id', 'name', 'is_active', 'last_accessed'],
@@ -35,4 +40,12 @@ export class ExternalServerRepository {
       select: ['id', 'name', 'is_active', 'last_accessed']
     });
   }
+
+static async updateStatus(serverId: number, isActive: boolean): Promise<void> {
+    await this.repo.update({ id: serverId }, {
+      is_active: isActive,
+      last_accessed: new Date(),
+    });
+  }
+
 }

@@ -17,20 +17,24 @@ const axios_1 = __importDefault(require("axios"));
 const entities_1 = require("../../entities");
 const Logger_1 = require("../logger/Logger");
 const db_1 = require("../../config/db");
+const repositories_1 = require("../../repositories");
 class TheNewsApiFetcher {
     constructor() {
         this.apiKey = process.env.THE_NEWS_API_KEY || 'uqgQ9WYPGxAHDRh5tw8mtldTUOfA5ZLv3lY175YR';
         this.logger = Logger_1.Logger.getInstance();
+        this.serverId = 2;
     }
     fetchNews() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.apiKey) {
                 this.logger.error('Missing THE_NEWS_API_KEY');
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, false);
                 return [];
             }
             const categoryRepo = db_1.AppDataSource.getRepository(entities_1.NewsCategory);
             const generalCategory = yield categoryRepo.findOneBy({ name: 'General' });
             if (!generalCategory) {
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, false);
                 this.logger.error('[TheNewsAPI] General category not found in DB');
                 return [];
             }
@@ -43,6 +47,7 @@ class TheNewsApiFetcher {
                     },
                 });
                 const articles = response.data.data || [];
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, true);
                 return articles.map((article) => {
                     const news = new entities_1.NewsArticle();
                     news.title = article.title;
@@ -57,6 +62,7 @@ class TheNewsApiFetcher {
             }
             catch (err) {
                 this.logger.error(`[TheNewsAPI] Error: ${err.message}`, { stack: err.stack });
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, false);
                 return [];
             }
         });

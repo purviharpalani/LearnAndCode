@@ -10,15 +10,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsCategoryRepository = void 0;
+// src/repositories/NewsCategoryRepository.ts
 const db_1 = require("../config/db");
 const NewsCategory_1 = require("../entities/NewsCategory");
 class NewsCategoryRepository {
-    static create(name) {
+    static get repo() {
+        return db_1.AppDataSource.getRepository(NewsCategory_1.NewsCategory);
+    }
+    static add(name) {
         return __awaiter(this, void 0, void 0, function* () {
             const category = this.repo.create({ name });
             return yield this.repo.save(category);
         });
     }
+    static findByName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.findOne({ where: { name } });
+        });
+    }
+    static findAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.find();
+        });
+    }
 }
 exports.NewsCategoryRepository = NewsCategoryRepository;
-NewsCategoryRepository.repo = db_1.AppDataSource.getRepository(NewsCategory_1.NewsCategory);

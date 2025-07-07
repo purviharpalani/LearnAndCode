@@ -4,16 +4,19 @@ import { Logger } from '../logger/Logger';
 import { HttpClient } from '../http/HttpClient';
 import { inferCategory } from '../../shared/utils/infercategory';
 import { AppDataSource } from '../../config/db';
+import { ExternalServerRepository } from '../../repositories';
 
 export class NewsApiOrgFetcher implements INewsFetcher {
   private readonly apiKey = process.env.NEWS_API_KEY || '62075ceceb4449638ea24a3acf33bcfa';
   private readonly categories = ['business', 'technology', 'entertainment', 'sports'];
   private readonly logger = Logger.getInstance();
   private readonly httpClient = new HttpClient('https://newsapi.org/v2');
+  private readonly serverId = 1;
 
   async fetchNews(): Promise<NewsArticle[]> {
     if (!this.apiKey) {
       this.logger.error('Missing NEWS_API_KEY');
+      await ExternalServerRepository.updateStatus(this.serverId, false);
       return [];
     }
 
@@ -22,10 +25,12 @@ export class NewsApiOrgFetcher implements INewsFetcher {
 
     if (!generalCategory) {
       this.logger.error('[NewsApiOrgFetcher] Default category "General" not found');
+      await ExternalServerRepository.updateStatus(this.serverId, false);
       return [];
     }
 
     const allArticles: NewsArticle[] = [];
+    let successCount = 0;
 
     for (const category of this.categories) {
       try {
@@ -53,10 +58,14 @@ export class NewsApiOrgFetcher implements INewsFetcher {
 
         allArticles.push(...mapped);
         this.logger.info(`[NewsApiOrg] Fetched ${mapped.length} articles for category ${category}`);
+        successCount++;
       } catch (err: any) {
         this.logger.error(`[NewsApiOrg] Error fetching ${category}: ${err.message}`, { stack: err.stack });
       }
     }
+
+    const isActive = successCount > 0;
+    await ExternalServerRepository.updateStatus(this.serverId, isActive);
 
     return allArticles;
   }

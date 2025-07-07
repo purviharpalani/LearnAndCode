@@ -23,25 +23,18 @@ __decorate([
     __metadata("design:type", String)
 ], ExternalServer.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], ExternalServer.prototype, "base_url", void 0);
-__decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], ExternalServer.prototype, "is_active", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], ExternalServer.prototype, "created_at", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], ExternalServer.prototype, "updated_at", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
     __metadata("design:type", Date)
 ], ExternalServer.prototype, "last_accessed", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }) // or false if required
+    ,
+    __metadata("design:type", String)
+], ExternalServer.prototype, "api_key", void 0);
 exports.ExternalServer = ExternalServer = __decorate([
     (0, typeorm_1.Entity)('external_servers')
 ], ExternalServer);

@@ -11,23 +11,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExternalServerRepository = void 0;
 const db_1 = require("../config/db");
-const ExternalServer_1 = require("../entities/ExternalServer");
+const entities_1 = require("../entities");
 class ExternalServerRepository {
     static getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repo.find();
+            return yield this.repo.find();
+        });
+    }
+    static createExternalServer(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.create(data);
         });
     }
     static getStatusSummary() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repo.find({
+            return yield this.repo.find({
                 select: ['id', 'name', 'is_active', 'last_accessed'],
             });
         });
     }
+    static findById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.findOneBy({ id });
+        });
+    }
     static update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.repo.update(id, data);
+            yield this.repo.update({ id }, data);
+        });
+    }
+    static updateApiKey(id, api_key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update({ id }, { api_key });
         });
     }
     static delete(id) {
@@ -35,6 +50,21 @@ class ExternalServerRepository {
             yield this.repo.delete(id);
         });
     }
+    static getStatusList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.repo.find({
+                select: ['id', 'name', 'is_active', 'last_accessed']
+            });
+        });
+    }
+    static updateStatus(serverId, isActive) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repo.update({ id: serverId }, {
+                is_active: isActive,
+                last_accessed: new Date(),
+            });
+        });
+    }
 }
 exports.ExternalServerRepository = ExternalServerRepository;
-ExternalServerRepository.repo = db_1.AppDataSource.getRepository(ExternalServer_1.ExternalServer);
+ExternalServerRepository.repo = db_1.AppDataSource.getRepository(entities_1.ExternalServer);

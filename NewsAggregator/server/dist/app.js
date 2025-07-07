@@ -25,6 +25,7 @@ const errorHandler_1 = require("./middlewares/errorHandler");
 // Routes
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const article_routes_1 = __importDefault(require("./routes/article.routes"));
+const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
 dotenv_1.default.config();
 const logger = Logger_1.Logger.getInstance();
 const app = (0, express_1.default)();
@@ -35,6 +36,7 @@ app.use(express_1.default.json());
 // Route Mounting
 app.use('/auth', auth_routes_1.default);
 app.use('/articles', article_routes_1.default);
+app.use('/admin', admin_routes_1.default);
 // Global Error Handler
 app.use(errorHandler_1.errorHandler);
 // Server Bootstrap

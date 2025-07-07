@@ -10,23 +10,12 @@ export class ExternalServer {
   @Column({ unique: true })
   name: string;
 
-  @Column()
-  base_url: string;
-
   @Column({ default: true })
   is_active: boolean;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @Column({ type: 'datetime', nullable: true })
+  last_accessed: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @Column({ type: 'timestamp', nullable: true })
-last_accessed: Date;
-
-@Column({ nullable: true }) // or false if required
-api_key: string;
-
-
+  @Column({ nullable: true }) // or false if required
+  api_key: string;
 }

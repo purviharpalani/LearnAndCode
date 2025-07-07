@@ -3,14 +3,17 @@ import { INewsFetcher } from '../../core/interfaces/INewsFetcher';
 import { NewsArticle, NewsCategory } from '../../entities';
 import { Logger } from '../logger/Logger';
 import { AppDataSource } from '../../config/db';
+import { ExternalServerRepository } from '../../repositories';
 
 export class TheNewsApiFetcher implements INewsFetcher {
   private readonly apiKey = process.env.THE_NEWS_API_KEY || 'uqgQ9WYPGxAHDRh5tw8mtldTUOfA5ZLv3lY175YR';
   private logger = Logger.getInstance();
+  private readonly serverId = 2;
 
   async fetchNews(): Promise<NewsArticle[]> {
     if (!this.apiKey) {
       this.logger.error('Missing THE_NEWS_API_KEY');
+      await ExternalServerRepository.updateStatus(this.serverId, false);
       return [];
     }
 
@@ -18,6 +21,7 @@ export class TheNewsApiFetcher implements INewsFetcher {
     const generalCategory = await categoryRepo.findOneBy({ name: 'General' });
 
     if (!generalCategory) {
+      await ExternalServerRepository.updateStatus(this.serverId, false);
       this.logger.error('[TheNewsAPI] General category not found in DB');
       return [];
     }
@@ -32,6 +36,7 @@ export class TheNewsApiFetcher implements INewsFetcher {
       });
 
       const articles = response.data.data || [];
+      await ExternalServerRepository.updateStatus(this.serverId, true);
 
       return articles.map((article: any) => {
         const news = new NewsArticle();
@@ -45,8 +50,10 @@ export class TheNewsApiFetcher implements INewsFetcher {
         return news;
       });
 
+
     } catch (err: any) {
       this.logger.error(`[TheNewsAPI] Error: ${err.message}`, { stack: err.stack });
+      await ExternalServerRepository.updateStatus(this.serverId, false);
       return [];
     }
   }

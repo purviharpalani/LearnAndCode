@@ -10,13 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NewsCategoryController = void 0;
-const NewsCategoryRepository_1 = require("../repositories/NewsCategoryRepository");
+const NewsCategoryRepository_1 = require("../../../repositories/NewsCategoryRepository");
 class NewsCategoryController {
-    static create(req, res) {
+    static addCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name } = req.body;
-            const category = yield NewsCategoryRepository_1.NewsCategoryRepository.add(name);
-            return res.status(201).json(category);
+            if (!name) {
+                return res.status(400).json({ error: 'Category name is required' });
+            }
+            try {
+                yield NewsCategoryRepository_1.NewsCategoryRepository.add(name);
+                res.status(201).json({ message: 'Category added' });
+            }
+            catch (err) {
+                res.status(500).json({ error: 'Failed to add category' });
+            }
         });
     }
 }
