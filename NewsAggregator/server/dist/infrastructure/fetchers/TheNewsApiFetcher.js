@@ -1,0 +1,97 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TheNewsApiFetcher = void 0;
+const axios_1 = __importDefault(require("axios"));
+const entities_1 = require("../../entities");
+const Logger_1 = require("../logger/Logger");
+const db_1 = require("../../config/db");
+const repositories_1 = require("../../repositories");
+class TheNewsApiFetcher {
+    constructor() {
+        this.apiKey = process.env.THE_NEWS_API_KEY || '';
+        this.logger = Logger_1.Logger.getInstance();
+        this.serverId = 2;
+    }
+    fetchNews() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.apiKey) {
+                this.logger.error('Missing THE_NEWS_API_KEY');
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, false);
+                return [];
+            }
+            const categoryRepo = db_1.AppDataSource.getRepository(entities_1.NewsCategory);
+            const generalCategory = yield categoryRepo.findOneBy({ name: 'General' });
+            if (!generalCategory) {
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, false);
+                this.logger.error('[TheNewsAPI] General category not found in DB');
+                return [];
+            }
+            try {
+                const response = yield axios_1.default.get('https://api.thenewsapi.com/v1/news/top', {
+                    params: {
+                        api_token: this.apiKey,
+                        locale: 'us',
+                        limit: 3,
+                    },
+                });
+                const articles = response.data.data || [];
+                const blocked = yield repositories_1.BlockedKeywordRepository.getAll();
+                const blockedWords = blocked.map(b => b.keyword.toLowerCase());
+                let mapped = articles.map((article) => {
+                    const news = new entities_1.NewsArticle();
+                    news.title = article.title;
+                    news.description = (article.description || '').slice(0, 1000);
+                    news.source = article.source || '';
+                    news.url = article.url || '';
+                    news.category = this.inferCategory(article);
+                    news.categoryEntity = generalCategory;
+                    news.created_at = new Date();
+                    return news;
+                });
+                mapped = mapped.filter((article) => {
+                    const text = `${article.title} ${article.description}`.toLowerCase();
+                    return !blockedWords.some(word => text.includes(word));
+                });
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, true);
+                this.logger.info(`[TheNewsAPI] Fetched ${mapped.length} articles after filtering`);
+                return mapped;
+            }
+            catch (err) {
+                this.logger.error(`[TheNewsAPI] Error: ${err.message}`, { stack: err.stack });
+                yield repositories_1.ExternalServerRepository.updateStatus(this.serverId, false);
+                return [];
+            }
+        });
+    }
+    inferCategory(article) {
+        const text = `${article.title} ${article.description}`.toLowerCase();
+        if (text.includes('sports'))
+            return 'sports';
+        if (text.includes('entertainment'))
+            return 'entertainment';
+        if (text.includes('politics'))
+            return 'politics';
+        if (text.includes('business'))
+            return 'business';
+        if (text.includes('technology'))
+            return 'technology';
+        if (text.includes('health'))
+            return 'health';
+        if (text.includes('science'))
+            return 'science';
+        return 'general';
+    }
+}
+exports.TheNewsApiFetcher = TheNewsApiFetcher;

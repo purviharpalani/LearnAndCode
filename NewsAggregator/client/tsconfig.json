@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                   // Modern JS support
+    "module": "commonjs",                 // Node compatibility
+    "rootDir": "src",                     // Where your .ts files live
+    "outDir": "dist",                     // Where compiled .js goes
+    "esModuleInterop": true,              // Allow default imports
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,                       // Enable all strict type checks
+    "skipLibCheck": true,                 // Skip checking node_modules
+    "resolveJsonModule": true             // Import JSON files if needed
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}
